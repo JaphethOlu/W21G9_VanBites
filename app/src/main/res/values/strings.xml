@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">VanBites</string>
+    <string name="textViewFoodTitle">Spicy BBQ Chicken Wings</string>
+    <string name="imageViewFood">Image of Current Food Iten</string>
+    <string name="btnDecrementFoodQuantity">-</string>
+    <string name="btnIncrementFoodQuantity">+</string>
+    <string name="textViewFoodDescription">"Spicy jalapeno brisket laborum ham hock, esse pig picanha biltong qui est drumstick spare ribs. Pastrami est ex dolore excepteur nisi jerky t-bone brisket culpa anim pork loin lorem incididunt doner."</string>
+    <string name="editFoodQuantity">1</string>
+    <string name="btnAddToOrder">Add To Order</string>
 </resources>
