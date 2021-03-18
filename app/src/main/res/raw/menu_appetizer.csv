@@ -1,21 +1,21 @@
-Name,Category,ImageLocation
-Tempura,Appetizer,Appetizer_Tempura
-Avocado Toast,Appetizer,Avo_Toast
-Baked Shrimp & Pork Tarts with Cheese,Appetizer,Baked_shrip_and_pork_tarts_with_cheese
-Chicken Karange,Appetizer,Chicken_Karage
-Crispy Rocket Shrimp,Appetizer,Crispy_rocket_shrimp
-Deep Fried Prawns,Appetizer,Deep_Fried_Prawns
-Gyoza,Appetizer,Gyoza
-Hommos,Appetizer,Hommos
-Oyster Motoyaki,Appetizer,Oyster_motoyaki
-Pork BBQ Skewers,Appetizer,Pork_BBQ_skewers
-Prawn in Crunchy Noodles,Appetizer,Prawn_in_crunchy_noodles
-Roti Canai Flatbread,Appetizer,Roti_canai_flatbread
-Salad Roll,Appetizer,Salad_roll
-Salmon Uni Ikura,Appetizer,Salmon_uni_ikura
-Sambuca Cream Prawns,Appetizer,Sambuca_cream_prawns
-Sev Puri,Appetizer,Sev_Puri
-Spring Roll,Appetizer,Spring_Roll
-Taco Wasabi,Appetizer,Taco_Wasabi
-Takoyaki,Appetizer,Takoyaki
-Tartar Shrimp,Appetizer,TartarShrimp
+Id,Name,Category,ImageLocation
+1,Tempura,Appetizer,Appetizer_Tempura
+2,Avocado Toast,Appetizer,Avo_Toast
+3,Baked Shrimp & Pork Tarts with Cheese,Appetizer,Baked_shrip_and_pork_tarts_with_cheese
+4,Chicken Karange,Appetizer,Chicken_Karage
+5,Crispy Rocket Shrimp,Appetizer,Crispy_rocket_shrimp
+6,Deep Fried Prawns,Appetizer,Deep_Fried_Prawns
+7,Gyoza,Appetizer,Gyoza
+8,Hommos,Appetizer,Hommos
+9,Oyster Motoyaki,Appetizer,Oyster_motoyaki
+10,Pork BBQ Skewers,Appetizer,Pork_BBQ_skewers
+11,Prawn in Crunchy Noodles,Appetizer,Prawn_in_crunchy_noodles
+12,Roti Canai Flatbread,Appetizer,Roti_canai_flatbread
+13,Salad Roll,Appetizer,Salad_roll
+14,Salmon Uni Ikura,Appetizer,Salmon_uni_ikura
+15,Sambuca Cream Prawns,Appetizer,Sambuca_cream_prawns
+16,Sev Puri,Appetizer,Sev_Puri
+17,Spring Roll,Appetizer,Spring_Roll
+18,Taco Wasabi,Appetizer,Taco_Wasabi
+19,Takoyaki,Appetizer,Takoyaki
+20,Tartar Shrimp,Appetizer,TartarShrimp
