@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Ignoring secrets xml
+**/*/res/values/secrets.xml
+**/google-services.json
