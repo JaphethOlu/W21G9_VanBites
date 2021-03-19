@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cart {
+public class Order {
 
     private List<OrderItem> items = new ArrayList<>();
     private double taxRate = .12; // 12% tax estimate
@@ -13,7 +13,7 @@ public class Cart {
     private double tax;
     private double total;
 
-    public Cart(List<OrderItem> items) {
+    public Order(List<OrderItem> items) {
         this.items = items;
         calculateTotalCost();
     }
