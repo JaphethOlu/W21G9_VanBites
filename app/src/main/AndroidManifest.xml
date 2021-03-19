@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VanBites">
         <activity android:name=".Categories"></activity>
+        <activity android:name=".FoodItemActivity">
+
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
