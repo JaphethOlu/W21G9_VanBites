@@ -27,13 +27,19 @@ public class Categories extends AppCompatActivity {
 
     RecyclerView recyclerViewCategory;
 
-//    String firebaseUrl = getString(R.string.storageReferenceImages);
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
+
+        // make activity fullscreen
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         // Firebase initiation
         category = FirebaseDatabase.getInstance().getReference().child("Category");

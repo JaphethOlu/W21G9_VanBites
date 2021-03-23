@@ -5,16 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.view.WindowManager;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Timer;
+import java.util.TimerTask;
 
+public class SplashWelcome extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash_welcome);
 
         // make activity fullscreen
         View decorView = getWindow().getDecorView();
@@ -25,16 +27,21 @@ public class MainActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        Button btnViewMenu = findViewById(R.id.btnViewMenu);
 
-        btnViewMenu.setOnClickListener(new View.OnClickListener() {
+        // timer task says what task to be done
+        TimerTask timerTask = new TimerTask() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Categories.class));
+            public void run() {
+                // start next activity
+                startActivity(new Intent(SplashWelcome.this, MainActivity.class));
+                // finish current activity object
+                finish();
             }
-        });
+        };
 
+// timer specifies delay
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 3000);
     }
-
 
 }
