@@ -10,12 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.vanbites.Model.Category;
+import com.example.vanbites.Model.Category_model;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 
@@ -23,13 +22,12 @@ public class Categories extends AppCompatActivity {
 
     DatabaseReference category;
 
-    FirebaseRecyclerOptions<Category> options;
+    FirebaseRecyclerOptions<Category_model> options;
     FirebaseRecyclerAdapter adapter;
 
-    RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerViewCategory;
 
-    String firebaseUrl = getString(R.string.storageReferenceImages);
+//    String firebaseUrl = getString(R.string.storageReferenceImages);
 
 
     @Override
@@ -56,8 +54,8 @@ public class Categories extends AppCompatActivity {
         // Best used with small result sets since all results are loaded at once.
 
 
-        options =  new FirebaseRecyclerOptions.Builder<Category>().setQuery(category, Category.class).build();
-        adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(options) {
+        options =  new FirebaseRecyclerOptions.Builder<Category_model>().setQuery(category, Category_model.class).build();
+        adapter = new FirebaseRecyclerAdapter<Category_model, MenuViewHolder>(options) {
             @NonNull
             @Override
             public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -68,7 +66,7 @@ public class Categories extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull MenuViewHolder holder, int position, @NonNull Category model) {
+            protected void onBindViewHolder(@NonNull MenuViewHolder holder, int position, @NonNull Category_model model) {
                 // Bind the Category object to the MenuViewHolder
                 holder.txtViewCategoryName.setText(model.getName());
 

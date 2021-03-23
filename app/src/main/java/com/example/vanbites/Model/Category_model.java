@@ -1,14 +1,14 @@
 package com.example.vanbites.Model;
 
-public class Category {
+public class Category_model {
 
     private String name;
     private String image;
 
     // empty constructor required for Firebase's automatic data mapping
-    public Category(){};
+    public Category_model(){};
 
-    public Category(String name, String image) {
+    public Category_model(String name, String image) {
         this.name = name;
         this.image = image;
     }
