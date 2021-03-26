@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize the food menu list
         menu = new ArrayList<Food>();
+
         createInputStreamForCSVFiles();
         createAndPopulateDatabase();
-        insertMenu();
     }
 
     private void createInputStreamForCSVFiles() {
@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 //Log.d("NewFood", "Id: " + id + " Name: " + name + " category " + category + " Price: " + price + " ImageLocation: " + imageLocation);
 
                 Food newFood = new Food(id, name, price, description, category, imageLocation);
+
+                // Add the food item to the menu
                 menu.add(newFood);
             }
             Log.d("MenuLength", "The menu contains " + menu.size() + " items");
@@ -88,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method creates and populate the database if it doesn't exist
+     */
     private void createAndPopulateDatabase() {
         try {
             //VanbitesDB = SQLiteDatabase.openDatabase()
@@ -143,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
 
             Toast.makeText(this, "Created DB", Toast.LENGTH_LONG).show();
 
+            // Inserts the menu into the database
+            insertMenu();
         } catch (SQLiteException exception) {
             Log.d("DBCreate", "Error populating Database -> " + exception.getMessage());
         }
@@ -166,9 +173,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 result = VanbitesDB.insert("Food", null, values);
                 if(result != -1) {
-                    Log.d("InsertFoodSuc", "Successfull inserted food with id " + food.getId() + " from category " + food.getCategory());
+                    Log.d("MenuInsertSuc", "Successfully inserted food with id " + food.getId() + " from category " + food.getCategory());
                 } else {
-                    Log.d("InsertFoodErr", "Error inserting food with id " + food.getId() + " from category " + food.getCategory());
+                    Log.d("MenuInsertErr", "Error inserting food with id " + food.getId() + " from category " + food.getCategory());
                 }
             } catch (Exception e) {
                 Log.d("MenuInsertErr", "Error inserting food with id " + food.getId() + " from category " + food.getCategory());
