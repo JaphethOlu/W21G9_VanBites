@@ -1,6 +1,6 @@
 package com.example.vanbites;
 
-import com.example.vanbites.entities.Cart;
+import com.example.vanbites.entities.Order;
 import com.example.vanbites.entities.Food;
 import com.example.vanbites.entities.OrderItem;
 
@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CartUnitTest {
+public class OrderUnitTest {
 
     // Arrange
 
@@ -29,7 +29,7 @@ public class CartUnitTest {
 
     List<OrderItem> items = new ArrayList<>();
 
-    Cart shoppingCart;
+    Order shoppingOrder;
 
     @Test
     void calculateTotalBill() {
@@ -45,12 +45,12 @@ public class CartUnitTest {
         items.add(dumplingsOrder);
 
 
-        shoppingCart = new Cart(items);
+        shoppingOrder = new Order(items);
 
         assertAll("price of all items",
-                () -> assertEquals(4.79, shoppingCart.getTax()),
-                () -> assertEquals(39.94, shoppingCart.getSubTotal()),
-                () -> assertEquals(44.73, shoppingCart.getTotal())
+                () -> assertEquals(4.79, shoppingOrder.getTax()),
+                () -> assertEquals(39.94, shoppingOrder.getSubTotal()),
+                () -> assertEquals(44.73, shoppingOrder.getTotal())
         );
         
     }
