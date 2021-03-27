@@ -6,14 +6,14 @@ public class Food {
     private String name;
     private double price;
     private String description;
-    private Category category;
+    private String category;
     private String imageLocation;
 
     public Food() {
 
     }
 
-    public Food(int id, String name, double price, String description, Category category, String imageLocation) {
+    public Food(int id, String name, double price, String description, String category, String imageLocation) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -54,11 +54,11 @@ public class Food {
         this.description = description;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
