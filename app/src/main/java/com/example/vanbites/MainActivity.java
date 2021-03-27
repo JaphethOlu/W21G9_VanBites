@@ -2,6 +2,8 @@ package com.example.vanbites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//Testing pull and push from dev
+
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
