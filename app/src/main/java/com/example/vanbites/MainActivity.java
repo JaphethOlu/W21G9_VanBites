@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         String setPRAGMAForeignKeysOn = "PRAGMA foreign_keys=ON;";
         String dropAddressTable = "DROP TABLE IF EXISTS Address;";
         String dropBillingTable = "DROP TABLE IF EXISTS Billing;";
-        String dropOrderItemsTable = "DROP TABLE IF EXISTS OrderItems;";
+        String dropCartTable = "DROP TABLE IF EXISTS Cart;";
         String dropOrderTable = "DROP TABLE IF EXISTS Orders;";
         String dropFoodTable = "DROP TABLE IF EXISTS Food;";
 
@@ -119,14 +119,13 @@ public class MainActivity extends AppCompatActivity {
         String createFoodTable = "CREATE TABLE Food " +
                 "(FoodId INTEGER PRIMARY KEY, Name TEXT, Price REAL, Description TEXT, Category TEXT, ImageLocation TEXT);";
         String createAddressTable = "CREATE TABLE Address " +
-                "(AddressId INTEGER PRIMARY KEY, AddressLine1 TEXT, AddressLine2 TEXT, ProvinceAndPostCode TEXT);";
+                "(AddressId INTEGER PRIMARY KEY, Name TEXT, AddressLine1 TEXT, AddressLine2 TEXT, ProvinceAndPostCode TEXT);";
         String createBillingTable = "CREATE TABLE Billing " +
                 "(BillingId INTEGER PRIMARY KEY, CardNumber INTEGER, CardHolderName TEXT, ExpiryDate NUMERIC);";
         String createOrdersTable = "CREATE TABLE Orders " +
-                "(OrderId INTEGER PRIMARY KEY);";
-        String createOrderItemsTable= "CREATE TABLE OrderItems" +
-                "(OrderId INTEGER, FoodId INTEGER, Quantity INTEGER, FOREIGN KEY (OrderId) REFERENCES Orders(OrderId), " +
-                "FOREIGN KEY (FoodId) REFERENCES Food(FoodId));";
+                "(OrderId INTEGER PRIMARY KEY, FoodItems TEXT, Address TEXT, Payment TEXT, DeliveryNotes TEXT);";
+        String createCartTable = "CREATE TABLE Cart " +
+                "(FoodId INTEGER, FoodName TEXT, Quantity INTEGER, Price INTEGER, FOREIGN KEY (FoodId) REFERENCES Food(FoodId));";
 
         try {
             // Set Foreign keys on
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             // Drop tables. Remember to order the drops due to foreign keys
             VanbitesDB.execSQL(dropAddressTable);
             VanbitesDB.execSQL(dropBillingTable);
-            VanbitesDB.execSQL(dropOrderItemsTable);
+            VanbitesDB.execSQL(dropCartTable);
             VanbitesDB.execSQL(dropOrderTable);
             VanbitesDB.execSQL(dropFoodTable);
 
@@ -144,12 +143,14 @@ public class MainActivity extends AppCompatActivity {
             VanbitesDB.execSQL(createAddressTable);
             VanbitesDB.execSQL(createBillingTable);
             VanbitesDB.execSQL(createOrdersTable);
-            VanbitesDB.execSQL(createOrderItemsTable);
+            VanbitesDB.execSQL(createCartTable);
 
             Toast.makeText(this, "Created DB", Toast.LENGTH_LONG).show();
 
             // Inserts the menu into the database
             insertMenu();
+            // Inserts some items into the cart
+            insertCart();
         } catch (SQLiteException exception) {
             Log.d("DBCreate", "Error populating Database -> " + exception.getMessage());
         }
@@ -173,12 +174,48 @@ public class MainActivity extends AppCompatActivity {
             try {
                 result = VanbitesDB.insert("Food", null, values);
                 if(result != -1) {
-                    Log.d("MenuInsertSuc", "Successfully inserted food with id " + food.getId() + " from category " + food.getCategory());
+                    Log.d("FoodInsertSuccess", "Successfully inserted food with id " + food.getId() + " from category " + food.getCategory());
                 } else {
-                    Log.d("MenuInsertErr", "Error inserting food with id " + food.getId() + " from category " + food.getCategory());
+                    Log.d("FoodInsertError", "Error inserting food with id " + food.getId() + " from category " + food.getCategory());
                 }
             } catch (Exception e) {
-                Log.d("MenuInsertErr", "Error inserting food with id " + food.getId() + " from category " + food.getCategory());
+                Log.d("FoodInsertError", "Error inserting food with id " + food.getId() + " from category " + food.getCategory());
+            }
+
+        }
+    }
+
+    private void insertCart() {
+        long result;
+
+        ContentValues values = new ContentValues();
+
+        Food appetizer = menu.get(12);
+        Food appetizer1 = menu.get(3);
+        Food main = menu.get(30);
+        Food main1 = menu.get(22);
+        Food drink = menu.get(42);
+        Food drink1 = menu.get(45);
+        Food dessert = menu.get(51);
+
+        Food[] cartItems = { appetizer, appetizer1, main, main1, drink, drink1, dessert };
+
+        for(Food food : cartItems) {
+
+            values.put("FoodId", food.getId());
+            values.put("FoodName", food.getName());
+            values.put("Quantity", 1);
+            values.put("Price", food.getPrice());
+
+            try {
+                result = VanbitesDB.insert("Cart", null, values);
+                if (result != -1) {
+                    Log.d("CartInsertSuccess", "Successfully inserted food with id " + food.getId() + " from category " + food.getCategory());
+                } else {
+                    Log.d("CartInsertError", "Error inserting food with id " + food.getId() + " from category " + food.getCategory());
+                }
+            } catch (Exception e) {
+                Log.d("CartInsertError", "Error inserting food with id " + food.getId() + " from category " + food.getCategory());
             }
 
         }
