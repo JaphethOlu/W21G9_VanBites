@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 //Testing pull and push from dev
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.vanbites.entities.Food;
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<Food> menu;
 
-    SQLiteDatabase VanbitesDB;
+     SQLiteDatabase VanbitesDB;
 
     private static String DB_NAME = "VanbitesDB";
 
@@ -45,6 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
         createInputStreamForCSVFiles();
         createAndPopulateDatabase();
+        Button button=findViewById(R.id.btnCart);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,CartActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void createInputStreamForCSVFiles() {
