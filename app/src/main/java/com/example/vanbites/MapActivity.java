@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -24,24 +25,29 @@ import javax.net.ssl.SSLEngineResult;
 
 public class MapActivity extends AppCompatActivity {
     EditText editText;
+    TextView txtError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         editText=findViewById(R.id.edit_text);
+        txtError=findViewById(R.id.textView2);
         Button btnCheckout=findViewById(R.id.btn_Checkout);
 
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text=editText.getText().toString();
-                Address address=new Address(text);
-                Intent intent = new Intent( MapActivity.this,CheckoutActivity.class);
-                intent.putExtra("address",address);
-                // intent.putExtra("order",new Order("edit","text"));
-                startActivity(intent);
-
+                String text = editText.getText().toString();
+               if(text.matches("")){
+                   txtError.setText("Please select an address");
+               }else {
+                   Address address = new Address(text);
+                   Intent intent = new Intent(MapActivity.this, CheckoutActivity.class);
+                   intent.putExtra("address", address);
+                   // intent.putExtra("order",new Order("edit","text"));
+                   startActivity(intent);
+               }
             }
         });
 
