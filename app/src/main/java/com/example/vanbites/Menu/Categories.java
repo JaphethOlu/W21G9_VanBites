@@ -68,7 +68,7 @@ public class Categories extends AppCompatActivity {
             @Override
             public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 // Create a new instance of the MenuViewHolder, in this case we are using a custom
-                // layout called R.layout.menu_item for each item
+                // layout called R.layout.category_item for each item
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_category_item, parent, false);
                 return new CategoryViewHolder(view);
             }
@@ -80,8 +80,6 @@ public class Categories extends AppCompatActivity {
 
                 // https://square.github.io/picasso/
                 Picasso.get().load(model.getImage()).into(holder.imgViewCategoryImage);
-
-               // Category clickItem = model;
 
                 holder.setItemClickListener(new ItemClickListener() {
                     @Override
