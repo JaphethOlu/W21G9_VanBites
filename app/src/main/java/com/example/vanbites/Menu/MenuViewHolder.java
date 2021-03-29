@@ -1,4 +1,4 @@
-package com.example.vanbites;
+package com.example.vanbites.Menu;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -8,18 +8,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vanbites.Interface.ItemClickListener;
+import com.example.vanbites.R;
 
 public class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public TextView txtViewCategoryName;
-    public ImageView imgViewCategoryImage;
+    public TextView txtViewMenuItemName;
+    public ImageView imgViewMenuImage;
 
     private ItemClickListener itemClickListener;
 
     public MenuViewHolder(@NonNull View itemView) {
         super(itemView);
-        txtViewCategoryName = itemView.findViewById(R.id.txtViewCategoryName);
-        imgViewCategoryImage = itemView.findViewById(R.id.imgViewCategoryImage);
+        txtViewMenuItemName = itemView.findViewById(R.id.txtViewMenuItemName);
+        imgViewMenuImage = itemView.findViewById(R.id.imgViewMenuImage);
 
         itemView.setOnClickListener(this);
     }

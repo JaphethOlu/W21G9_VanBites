@@ -2,7 +2,7 @@ package com.example.vanbites.Model;
 
 public class Menu_model {
 
-    private int id;
+    private String id;
     private String image;
     private String name;
 
@@ -11,17 +11,17 @@ public class Menu_model {
     public Menu_model() {
     }
 
-    public Menu_model(int id, String image, String name) {
+    public Menu_model(String id, String image, String name) {
         this.id = id;
         this.image = image;
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

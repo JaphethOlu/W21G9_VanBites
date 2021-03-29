@@ -4,18 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/layout_category_item"
-    tools:context=".Menu.Categories">
+    tools:context=".Menu.MenuItems">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCategory"
+        android:id="@+id/recyclerViewMenu"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
