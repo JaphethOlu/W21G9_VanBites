@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.vanbites.FoodItemActivity;
+import com.example.vanbites.Interface.ItemClickListener;
 import com.example.vanbites.Model.Menu_model;
 import com.example.vanbites.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -24,8 +27,8 @@ public class MenuItems extends AppCompatActivity {
 
     FirebaseRecyclerOptions<Menu_model> options;
     FirebaseRecyclerAdapter adapter;
-
     RecyclerView recyclerViewMenu;
+    String cat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class MenuItems extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
 
-        String cat = getIntent().getExtras().getString("CAT", "");
+        cat = getIntent().getExtras().getString("CAT", "");
 
         // Firebase initiation
         menu = FirebaseDatabase.getInstance().getReference().child(cat);
@@ -82,7 +85,19 @@ public class MenuItems extends AppCompatActivity {
                 // https://square.github.io/picasso/
                 Picasso.get().load(model.getImage()).into(holder.imgViewMenuImage);
 
-                // Category clickItem = model;
+                holder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("CAT", cat);
+                        bundle.putString("ITEM_ID", model.getId());
+                        bundle.putString("ITEM_IMG", model.getImage());
+                        bundle.putString("ITEM_NAME", model.getName());
+                        Intent item = new Intent(MenuItems.this, FoodItemActivity.class);
+                        item.putExtras(bundle);
+                        startActivity(item);
+                    }
+                });
             }
         };
 

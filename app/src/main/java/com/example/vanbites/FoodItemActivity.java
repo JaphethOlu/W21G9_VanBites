@@ -126,6 +126,10 @@ public class FoodItemActivity extends AppCompatActivity {
          * 1.   Get the Food Category from a Bundle,
          * 2.   The FoodId or Name to retrieve the image location
          * 3.   @param foodCategory YOU NEED TO INITIALIZE THIS VARIABLE
+
+
+
+
          */
         // Create a storage reference from our app
         StorageReference storageReference = firebaseStorage.getReference();
