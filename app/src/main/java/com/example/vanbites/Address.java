@@ -5,12 +5,13 @@ import android.os.Parcelable;
 
 public class Address implements Parcelable {
 
-    public  static final Parcelable.Creator CREATOR = new
-            Parcelable.Creator(){
-                public Address createFromParcel(Parcel in){
+    public static final Parcelable.Creator CREATOR = new
+            Parcelable.Creator() {
+                public Address createFromParcel(Parcel in) {
                     return new Address(in);
                 }
-                public Address[] newArray(int size){
+
+                public Address[] newArray(int size) {
                     return new Address[size];
                 }
             };
@@ -19,17 +20,19 @@ public class Address implements Parcelable {
     public Address(String address) {
         this.address = address;
     }
-    public String getAddress(){
+
+    public String getAddress() {
         return address;
     }
-    public void setAddress(String address){
-        this.address=address;
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 
-    public Address(Parcel in){
-        this.address=in.readString();
-            }
+    public Address(Parcel in) {
+        this.address = in.readString();
+    }
 
     @Override
     public int describeContents() {

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vanbites.entities.Food;
 import com.example.vanbites.entities.OrderItem;
@@ -28,19 +29,20 @@ public class FoodItemActivity extends AppCompatActivity {
 
     private final long TWO_MB = 2048 * 2048;
     private final String IMAGE_FORMAT = ".jpg";
-    private final String IMAGE_LOCATION = "/images/16x9/";
+    private final String IMAGE_LOCATION = "/images/4x3/";
 
     private Food currentFood;
     private OrderItem order;
     private int foodQuantity;
     private Bitmap bitmap;
-    private String foodCategory;
-    
+    private String foodCategory, foodTitle, foodName, foodId, foodImg;
+
     // UI Fields
     private Button btnIncrementQuantity;
     private Button btnDecrementQuantity;
     private EditText editQuantity;
     private ImageView foodImageView;
+    private TextView textViewFoodTitle;
 
     /**
      * Setting up Firebase Storage
@@ -56,6 +58,16 @@ public class FoodItemActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_item);
+
+        // make activity fullscreen
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        //        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                //        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
 
         // Initialize essential resources
         initializeEssentialResources();
@@ -78,7 +90,7 @@ public class FoodItemActivity extends AppCompatActivity {
         });
 
         btnDecrementQuantity.setOnClickListener((View view) -> {
-            if(foodQuantity > 1) {
+            if (foodQuantity > 1) {
                 foodQuantity--;
             }
             editQuantity.setText(Integer.toString(foodQuantity));
@@ -127,16 +139,31 @@ public class FoodItemActivity extends AppCompatActivity {
          * 2.   The FoodId or Name to retrieve the image location
          * 3.   @param foodCategory YOU NEED TO INITIALIZE THIS VARIABLE
          */
+
+
+        foodCategory = getIntent().getExtras().getString("CAT", "");
+        foodTitle = getIntent().getExtras().getString("ITEM_NAME", "");
+        foodId = getIntent().getExtras().getString("ITEM_ID", "");
+        foodImg = getIntent().getExtras().getString("ITEM_IMG", "");
+
+        textViewFoodTitle = findViewById(R.id.textViewFoodTitle);
+        textViewFoodTitle.setText(foodTitle);
+
+        foodName = foodTitle.replaceAll(" ", "_");
+
+        //Toast.makeText(FoodItemActivity.this, "" + foodCategory + " " + foodName + " " + foodId + " ", Toast.LENGTH_LONG).show();
+
+
         // Create a storage reference from our app
         StorageReference storageReference = firebaseStorage.getReference();
-        StorageReference imagesReference = storageReference.child(IMAGE_LOCATION + foodCategory + IMAGE_FORMAT);
+        StorageReference imagesReference = storageReference.child(IMAGE_LOCATION + foodCategory + "/" + foodName + IMAGE_FORMAT);
 
         // getBytes(TWO_MB) restrict the size of the image resource
         imagesReference.getBytes(TWO_MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] rawImage) {
                 // Data for "images/island.jpg" is returns, use this as needed
-                bitmap = BitmapFactory.decodeByteArray(rawImage, 0 , rawImage.length);
+                bitmap = BitmapFactory.decodeByteArray(rawImage, 0, rawImage.length);
                 foodImageView.setImageBitmap(bitmap);
             }
         }).addOnFailureListener(new OnFailureListener() {

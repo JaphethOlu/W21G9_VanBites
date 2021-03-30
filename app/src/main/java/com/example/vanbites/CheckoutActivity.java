@@ -14,20 +14,21 @@ import android.widget.Toast;
 
 public class CheckoutActivity extends AppCompatActivity {
     SQLiteDatabase VanbitesDB;
-    StringBuilder outputText ;
+    StringBuilder outputText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
-        EditText editDelivery=findViewById(R.id.etDelivery);
-        TextView txtAddress=findViewById(R.id.txtAddress);
-        Spinner spinnerPayment=findViewById(R.id.spinnerPayment);
-        Button btnPlaceOrder=findViewById(R.id.btnPlaceOrder);
-        TextView txtFood=findViewById(R.id.txtFoodItems);
+        EditText editDelivery = findViewById(R.id.etDelivery);
+        TextView txtAddress = findViewById(R.id.txtAddress);
+        Spinner spinnerPayment = findViewById(R.id.spinnerPayment);
+        Button btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
+        TextView txtFood = findViewById(R.id.txtFoodItems);
 
-        Address address= (Address) getIntent().getParcelableExtra("address");
-        String adressFinal=address.getAddress();
+        Address address = (Address) getIntent().getParcelableExtra("address");
+        String adressFinal = address.getAddress();
 
         txtAddress.setText(adressFinal);
         openDB();
@@ -36,23 +37,24 @@ public class CheckoutActivity extends AppCompatActivity {
         txtFood.setText(outputText.toString());
 
     }
-    private void openDB(){
-        try{
-            VanbitesDB = openOrCreateDatabase("VanbitesDB",MODE_PRIVATE,null);
-            Toast.makeText(this,"DB Opened",Toast.LENGTH_SHORT).show();
-        }catch (Exception ex){
-            Log.d("Cart","DB Open Error"+ ex.getMessage());
+
+    private void openDB() {
+        try {
+            VanbitesDB = openOrCreateDatabase("VanbitesDB", MODE_PRIVATE, null);
+            Toast.makeText(this, "DB Opened", Toast.LENGTH_SHORT).show();
+        } catch (Exception ex) {
+            Log.d("Cart", "DB Open Error" + ex.getMessage());
         }
     }
-    private void browseCart()
-    {
+
+    private void browseCart() {
         try {
             String queryStr = "SELECT FoodName,Quantity,Price FROM Cart;";
             String headStr = String.format("%-15s%-15s%-15s\n", "Name", "Quantity", "Price");
             outputText.append(headStr);
 
-            Cursor cursor = VanbitesDB.rawQuery(queryStr,null);
-            if(cursor!=null){
+            Cursor cursor = VanbitesDB.rawQuery(queryStr, null);
+            if (cursor != null) {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
                     String eachRec = String.format("%-15s%-15d%-15d\n", cursor.getString(0), cursor.getInt(1), cursor.getInt(2));
@@ -61,8 +63,8 @@ public class CheckoutActivity extends AppCompatActivity {
                 }
             }
 
-        }catch (Exception ex){
-            Log.d("Cart","Items not Shown"+ ex.getMessage());
+        } catch (Exception ex) {
+            Log.d("Cart", "Items not Shown" + ex.getMessage());
         }
 
     }

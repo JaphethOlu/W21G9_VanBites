@@ -2,7 +2,12 @@ package com.example.vanbites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-//Testing pull and push from dev
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import com.example.vanbites.Menu.Categories;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -34,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<Food> menu;
 
-     SQLiteDatabase VanbitesDB;
+    SQLiteDatabase VanbitesDB;
 
     private static String DB_NAME = "VanbitesDB";
 
@@ -43,12 +48,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // make activity fullscreen
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+        Button btnViewMenu = findViewById(R.id.btnViewMenu);
+
+        btnViewMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Categories.class));
+            }
+        });
+
         // Initialize the food menu list
         menu = new ArrayList<Food>();
 
         createInputStreamForCSVFiles();
         createAndPopulateDatabase();
-        Button button=findViewById(R.id.btnCart);
+
+        /*
+        Button button = findViewById(R.id.btnCart);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        */
+
     }
 
     private void createInputStreamForCSVFiles() {
@@ -176,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
 
-        for(Food food : menu) {
+        for (Food food : menu) {
 
             values.put("FoodId", food.getId());
             values.put("Name", food.getName());
@@ -187,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 result = VanbitesDB.insert("Food", null, values);
-                if(result != -1) {
+                if (result != -1) {
                     Log.d("FoodInsertSuccess", "Successfully inserted food with id " + food.getId() + " from category " + food.getCategory());
                 } else {
                     Log.d("FoodInsertError", "Error inserting food with id " + food.getId() + " from category " + food.getCategory());
@@ -212,9 +239,9 @@ public class MainActivity extends AppCompatActivity {
         Food drink1 = menu.get(45);
         Food dessert = menu.get(51);
 
-        Food[] cartItems = { appetizer, appetizer1, main, main1, drink, drink1, dessert };
+        Food[] cartItems = {appetizer, appetizer1, main, main1, drink, drink1, dessert};
 
-        for(Food food : cartItems) {
+        for (Food food : cartItems) {
 
             values.put("FoodId", food.getId());
             values.put("FoodName", food.getName());
@@ -237,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Randomly selects the price of an item based on its category
+     *
      * @param category The category of the food item
      * @return
      */
@@ -249,21 +277,22 @@ public class MainActivity extends AppCompatActivity {
             case "Appetizer":
                 index = random.nextInt(appetizerPrices.length - min) + min;
                 return appetizerPrices[index];
-                //break;
+            //break;
             case "Main":
                 index = random.nextInt(mainPrices.length - min) + min;
                 return mainPrices[index];
-                //break;
+            //break;
             case "Drink":
                 index = random.nextInt(drinkPrices.length - min) + min;
                 return drinkPrices[index];
-                //break;
+            //break;
             case "Dessert":
                 index = random.nextInt(dessertPrices.length - min) + min;
                 return dessertPrices[index];
-                //break;
+            //break;
             default:
                 return 0.00;
         }
     }
+
 }

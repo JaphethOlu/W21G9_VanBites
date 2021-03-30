@@ -12,6 +12,7 @@ import java.util.List;
 public class CartAdapter extends BaseAdapter {
 
     List<String[]> cartItems;
+
     public CartAdapter(List<String[]> cartItems) {
         this.cartItems = cartItems;
     }
@@ -33,8 +34,8 @@ public class CartAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView==null){
-            convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.cartlayout,parent,false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cartlayout, parent, false);
         }
         TextView txtFoodName = convertView.findViewById(R.id.textViewFoodName);
         EditText editQuantity = convertView.findViewById(R.id.editTextQuantity);
