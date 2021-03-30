@@ -5,16 +5,14 @@ public class Address {
     private String name;
     private String addressLine1;
     private String addressLine2;
-    private Province province;
-    private String postCode;
+    private String provinceAndPostCode;
 
-    public Address(int id, String name, String addressLine1, String addressLine2, Province province, String postCode) {
+    public Address(int id, String name, String addressLine1, String addressLine2, String provinceAndPostCode) {
         this.id = id;
         this.name = name;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
-        this.province = province;
-        this.postCode = postCode;
+        this.provinceAndPostCode = provinceAndPostCode;
     }
 
     public int getId() {
@@ -49,19 +47,11 @@ public class Address {
         this.addressLine2 = addressLine2;
     }
 
-    public Province getProvince() {
-        return province;
-    }
-
-    public void setProvince(Province province) {
-        this.province = province;
-    }
-
-    public String getPostCode() {
-        return postCode;
+    public String getProvinceAndPostCode() {
+        return provinceAndPostCode;
     }
 
     public void setPostCode(String postCode) {
-        this.postCode = postCode;
+        this.provinceAndPostCode = provinceAndPostCode;
     }
 }

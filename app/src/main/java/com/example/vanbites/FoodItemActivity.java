@@ -36,7 +36,7 @@ public class FoodItemActivity extends AppCompatActivity {
     private int foodQuantity;
     private Bitmap bitmap;
     private String foodCategory, foodTitle, foodName, foodId, foodImg;
-    
+
     // UI Fields
     private Button btnIncrementQuantity;
     private Button btnDecrementQuantity;
@@ -90,7 +90,7 @@ public class FoodItemActivity extends AppCompatActivity {
         });
 
         btnDecrementQuantity.setOnClickListener((View view) -> {
-            if(foodQuantity > 1) {
+            if (foodQuantity > 1) {
                 foodQuantity--;
             }
             editQuantity.setText(Integer.toString(foodQuantity));
@@ -163,7 +163,7 @@ public class FoodItemActivity extends AppCompatActivity {
             @Override
             public void onSuccess(byte[] rawImage) {
                 // Data for "images/island.jpg" is returns, use this as needed
-                bitmap = BitmapFactory.decodeByteArray(rawImage, 0 , rawImage.length);
+                bitmap = BitmapFactory.decodeByteArray(rawImage, 0, rawImage.length);
                 foodImageView.setImageBitmap(bitmap);
             }
         }).addOnFailureListener(new OnFailureListener() {
