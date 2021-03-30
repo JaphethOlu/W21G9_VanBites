@@ -7,4 +7,13 @@
     <string name="textViewFoodDescription">"Spicy jalapeno brisket laborum ham hock, esse pig picanha biltong qui est drumstick spare ribs. Pastrami est ex dolore excepteur nisi jerky t-bone brisket culpa anim pork loin lorem incididunt doner."</string>
     <string name="editFoodQuantity">1</string>
     <string name="btnAddToOrder">Add To Order</string>
+    <string name="checkout">CHECKOUT</string>
+    <string name="order">PLACE ORDER</string>
+    <string name="Delivery">Delivery instructions</string>
+    <string-array name="payment">
+        <item>Debit</item>
+        <item>Credit</item>
+        <item>COD</item>
+        <item>Google Pay</item>
+    </string-array>
 </resources>
