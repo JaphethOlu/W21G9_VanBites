@@ -1,5 +1,8 @@
 package com.example.vanbites.entities;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class OrderItem {
     private Food food;
     private int quantity;
@@ -29,5 +32,13 @@ public class OrderItem {
         if(quantity >= 0) {
             quantity--;
         }
+    }
+
+    public double getCost() {
+        BigDecimal price = BigDecimal.valueOf(food.getPrice());
+        BigDecimal quant = BigDecimal.valueOf(quantity);
+        BigDecimal total = price.multiply(quant);
+        total.setScale(2);
+        return total.doubleValue();
     }
 }
