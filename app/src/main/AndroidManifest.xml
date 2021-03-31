@@ -11,16 +11,17 @@
         android:theme="@style/Theme.VanBites">
         <activity android:name=".Menu.MenuItems" />
         <activity android:name=".SplashWelcome">
+
+        </activity>
+        <activity android:name=".CartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CartActivity" />
         <activity android:name=".CheckoutActivity" />
-        <activity android:name=".FoodItemActivity">
-        </activity>
+        <activity android:name=".FoodItemActivity" />
         <activity android:name=".MapActivity" />
 
         <activity android:name=".MainActivity">

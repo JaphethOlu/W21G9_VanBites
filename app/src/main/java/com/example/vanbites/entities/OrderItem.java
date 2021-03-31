@@ -29,7 +29,7 @@ public class OrderItem {
     }
 
     public void decrementQuantity() {
-        if(quantity >= 0) {
+        if(quantity > 1) {
             quantity--;
         }
     }

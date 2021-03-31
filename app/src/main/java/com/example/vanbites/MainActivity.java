@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         String createOrdersTable = "CREATE TABLE Orders " +
                 "(OrderId INTEGER PRIMARY KEY, FoodItems TEXT, Address TEXT, Payment TEXT, DeliveryNotes TEXT);";
         String createCartTable = "CREATE TABLE Cart " +
-                "(FoodId INTEGER, FoodName TEXT, Quantity INTEGER, Price INTEGER, FOREIGN KEY (FoodId) REFERENCES Food(FoodId));";
+                "(FoodId INTEGER, Quantity INTEGER, FOREIGN KEY (FoodId) REFERENCES Food(FoodId));";
 
         try {
             // Set Foreign keys on
@@ -241,9 +241,9 @@ public class MainActivity extends AppCompatActivity {
         for (Food food : cartItems) {
 
             values.put("FoodId", food.getId());
-            values.put("FoodName", food.getName());
+            //values.put("FoodName", food.getName());
             values.put("Quantity", 1);
-            values.put("Price", food.getPrice());
+           // values.put("Price", food.getPrice());
 
             try {
                 result = VanbitesDB.insert("Cart", null, values);
