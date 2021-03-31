@@ -38,9 +38,11 @@ public class CartAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cartlayout, parent, false);
         }
         TextView txtFoodName = convertView.findViewById(R.id.textViewFoodName);
-        EditText editQuantity = convertView.findViewById(R.id.editTextQuantity);
-        txtFoodName.setText(cartItems.get(position)[0]);
-        editQuantity.setText(cartItems.get(position)[1]);
+        TextView txtFoodID=convertView.findViewById(R.id.textViewFoodId);
+        TextView txtQuantity=convertView.findViewById(R.id.textViewQuantity);
+        txtFoodID.setText(cartItems.get(position)[0]);
+        txtFoodName.setText(cartItems.get(position)[1]);
+        txtQuantity.setText(cartItems.get(position)[2]);
         return convertView;
     }
 }

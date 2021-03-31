@@ -2,10 +2,12 @@ package com.example.vanbites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -35,6 +37,21 @@ public class CheckoutActivity extends AppCompatActivity {
         outputText = new StringBuilder();
         browseCart();
         txtFood.setText(outputText.toString());
+
+        btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int foodid=1;
+                //adding to order table
+                String foodItems = txtFood.getText().toString();
+                String addressforOrder = txtAddress.getText().toString();
+                String paymentMethod = spinnerPayment.getSelectedItem().toString();
+                String deliveryNotes = editDelivery.getText().toString();
+                addToOrderTable(foodid,foodItems,addressforOrder,paymentMethod,deliveryNotes);
+                //foodid=foodid+1;
+                //create intent and send to new activity if insert successfull
+            }
+        });
 
     }
 
@@ -67,6 +84,27 @@ public class CheckoutActivity extends AppCompatActivity {
             Log.d("Cart", "Items not Shown" + ex.getMessage());
         }
 
+    }
+
+    private void addToOrderTable(int id,String item,String deliveryAddress,String payment,String deliveryNote)
+    {
+        long result;
+        ContentValues val = new ContentValues();
+        val.put("OrderId","OD"+id);
+        val.put("FoodItems",item);
+        val.put("Address",deliveryAddress);
+        val.put("Payment",payment);
+        val.put("DeliveryNotes",deliveryNote);
+
+        try{
+            result = VanbitesDB.insert("Orders",null,val);
+            if (result==-1)
+            {
+                Log.d("Insert Order Table","Not able to insert" );
+            }
+        }catch (Exception ex){
+            Log.d("Insert Order Table","Insert Failed" + ex.getMessage());
+        }
     }
 
 }
