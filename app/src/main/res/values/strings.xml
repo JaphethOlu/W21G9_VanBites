@@ -14,6 +14,9 @@
     <string name="checkout">CHECKOUT</string>
     <string name="order">PLACE ORDER</string>
     <string name="Delivery">Delivery instructions</string>
+    <string name="updateordelete">Select Item to Update or Delete from this Order</string>
+    <string name="update">Update Item Quantity</string>
+    <string name="deleteitem">Delete Item</string>
     <string-array name="payment">
         <item>Debit</item>
         <item>Credit</item>
