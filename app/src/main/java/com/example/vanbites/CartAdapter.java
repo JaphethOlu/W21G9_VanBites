@@ -65,20 +65,18 @@ public class CartAdapter extends BaseAdapter {
         btnIncrementFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("CartAdapter", "Accessing: " + orderItems.get(position).getFood().getName());
                 orderItem.incrementQuantity();
                 textViewQuantity.setText(String.valueOf(orderItem.getQuantity()));
-                Log.d("CartAdapter", "Quantity now: " + orderItem.getQuantity());
+                notifyDataSetChanged();
             }
         });
 
         btnDecrementFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("CartAdapter", "Accessing: " + food.getName());
                 orderItem.decrementQuantity();
                 textViewQuantity.setText(String.valueOf(orderItem.getQuantity()));
-                Log.d("CartAdapter", "Quantity now: " + orderItem.getQuantity());
+                notifyDataSetChanged();
             }
         });
 

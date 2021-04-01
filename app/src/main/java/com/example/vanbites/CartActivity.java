@@ -18,14 +18,17 @@ import com.example.vanbites.entities.Food;
 import com.example.vanbites.entities.Order;
 import com.example.vanbites.entities.OrderItem;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
     private List<OrderItem> orderItemsList;
+    private Order order;
 
-    ListView listView;
+    private ListView listView;
+    private Button btnCheckout;
 
     SQLiteDatabase VanbitesDB;
 
@@ -40,29 +43,50 @@ public class CartActivity extends AppCompatActivity {
 
         // Get the order items from cart and add them to the list
         orderItemsList = retrieveCart();
+        order = new Order(orderItemsList);
 
         CartAdapter adapter = new CartAdapter(orderItemsList);
         adapter.registerDataSetObserver(observer);
         listView.setAdapter(adapter);
 
+        btnCheckout = findViewById(R.id.btnCheckout);
 
-        Button btnCheckout = findViewById(R.id.btnCheckout);
+        // Calculate and display the total cost of all cart items in btnCheckout
+        updateCheckoutTotal();
 
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Update the cart with the list of orderItemsList
                 updateCart();
+
+                // Start the delivery address activity
+                Intent intent = new Intent(CartActivity.this, MapActivity.class);
+                startActivity(intent);
             }
         });
 
     }
 
+    /**
+     * This method is triggered whenever an item is increased, decreased or deleted from the cart
+     */
     DataSetObserver observer = new DataSetObserver() {
         @Override
         public void onChanged() {
             super.onChanged();
+            updateCheckoutTotal();
         }
     };
+
+    /**
+     * This function uses the Order class to calculate the totat cost of all items in the cart.
+     * The total cost is placed in the checkout button
+     */
+    private void updateCheckoutTotal() {
+        double orderTotal = order.calculateTotalCost();
+        btnCheckout.setText("Checkout $" + orderTotal);
+    }
 
     private void openDB() {
         try {
@@ -73,6 +97,10 @@ public class CartActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Retrieve items from the cart
+     * @return returns a OrderItem List
+     */
     private List<OrderItem> retrieveCart() {
 
         List<OrderItem> CartList = new ArrayList<>();
@@ -142,6 +170,9 @@ public class CartActivity extends AppCompatActivity {
     }
     */
 
+    /**
+     * The only idea that came to mind when updating the cart is to drop and recreate the cart table using the items in the orderItemsList
+     */
     private void updateCart() {
 
         String dropCartTable = "DROP TABLE IF EXISTS Cart;";
@@ -171,7 +202,7 @@ public class CartActivity extends AppCompatActivity {
                 if (result != -1) {
                     Log.d("Cart", "Inserted into Cart FoodId: " + orderItem.getFood().getId() +
                                             "\nQuantity: " + orderItem.getQuantity());
-
+                } else {
                     Log.d("Cart", "Error inserting FoodId: " + orderItem.getFood().getId());
                 }
             }
