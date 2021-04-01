@@ -19,6 +19,8 @@
     <string name="deleteitem">Delete Item</string>
     <string name="btnDeleteFromOrder">Delete</string>
     <string name="btnProceedToCheckout">Checkout</string>
+    <string name="deleteaddress">Delete</string>
+    <string name="deleteaddresss">Delete Address</string>
     <string-array name="payment">
         <item>Debit</item>
         <item>Credit</item>
