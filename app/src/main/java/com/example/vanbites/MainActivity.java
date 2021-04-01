@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         String createFoodTable = "CREATE TABLE Food " +
                 "(FoodId INTEGER PRIMARY KEY, Name TEXT, Price REAL, Description TEXT, Category TEXT, ImageLocation TEXT);";
         String createAddressTable = "CREATE TABLE Address " +
-                "(AddressId INTEGER PRIMARY KEY, Name TEXT, AddressLine1 TEXT, AddressLine2 TEXT, ProvinceAndPostCode TEXT);";
+                "(Name TEXT, AddressLine1 TEXT, AddressLine2 TEXT, ProvinceAndPostCode TEXT);";
         String createBillingTable = "CREATE TABLE Billing " +
                 "(BillingId INTEGER PRIMARY KEY, CardNumber INTEGER, CardHolderName TEXT, ExpiryDate NUMERIC);";
         String createOrdersTable = "CREATE TABLE Orders " +

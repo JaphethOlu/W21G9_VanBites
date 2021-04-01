@@ -41,7 +41,7 @@ public class CheckoutActivity extends AppCompatActivity {
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int foodid=1;
+                int foodid=2;
                 //adding to order table
                 String foodItems = txtFood.getText().toString();
                 String addressforOrder = txtAddress.getText().toString();
@@ -65,16 +65,16 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void browseCart() {
-        try {
-            String queryStr = "SELECT FoodName,Quantity,Price FROM Cart;";
-            String headStr = String.format("%-15s%-15s%-15s\n", "Name", "Quantity", "Price");
-            outputText.append(headStr);
+        String queryStr = "SELECT Name, Quantity FROM Food INNER JOIN Cart ON Food.FoodId=Cart.FoodId;";
 
-            Cursor cursor = VanbitesDB.rawQuery(queryStr, null);
-            if (cursor != null) {
+        try {
+            Cursor cursor=VanbitesDB.rawQuery(queryStr,null);
+            String headRec=String.format("%-15s%-15s\n","Name","Quanity");
+            outputText.append(headRec);
+            if(cursor!=null){
                 cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
-                    String eachRec = String.format("%-15s%-15d%-15d\n", cursor.getString(0), cursor.getInt(1), cursor.getInt(2));
+                while (!cursor.isAfterLast()){
+                    String eachRec= String.format("%-15s%-15d\n",cursor.getString(0),cursor.getInt(1));
                     outputText.append(eachRec);
                     cursor.moveToNext();
                 }
@@ -88,9 +88,15 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void addToOrderTable(int id,String item,String deliveryAddress,String payment,String deliveryNote)
     {
+        String dropOrderTable = "DROP TABLE IF EXISTS Orders;";
+        String createOrdersTable = "CREATE TABLE Orders " +
+                "(OrderId INTEGER PRIMARY KEY, FoodItems TEXT, Address TEXT, Payment TEXT, DeliveryNotes TEXT);";
+        VanbitesDB.execSQL(dropOrderTable);
+        VanbitesDB.execSQL(createOrdersTable);
+
         long result;
         ContentValues val = new ContentValues();
-        val.put("OrderId","OD"+id);
+        val.put("OrderId",id);
         val.put("FoodItems",item);
         val.put("Address",deliveryAddress);
         val.put("Payment",payment);
@@ -98,9 +104,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
         try{
             result = VanbitesDB.insert("Orders",null,val);
-            if (result==-1)
+            if (result!=-1)
             {
-                Log.d("Insert Order Table","Not able to insert" );
+                Log.d("Insert Order Table","Success" );
             }
         }catch (Exception ex){
             Log.d("Insert Order Table","Insert Failed" + ex.getMessage());
