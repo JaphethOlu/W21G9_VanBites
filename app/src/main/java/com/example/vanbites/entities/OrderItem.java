@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class OrderItem {
+
     private Food food;
     private int quantity;
 
@@ -29,7 +30,7 @@ public class OrderItem {
     }
 
     public void decrementQuantity() {
-        if(quantity >= 0) {
+        if(quantity > 1) {
             quantity--;
         }
     }
@@ -40,5 +41,13 @@ public class OrderItem {
         BigDecimal total = price.multiply(quant);
         total.setScale(2);
         return total.doubleValue();
+    }
+
+    public BigDecimal getCostInBigDecimal() {
+        BigDecimal price = BigDecimal.valueOf(food.getPrice());
+        BigDecimal quant = BigDecimal.valueOf(quantity);
+        BigDecimal total = price.multiply(quant);
+        total.setScale(2);
+        return total;
     }
 }

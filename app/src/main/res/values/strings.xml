@@ -17,6 +17,8 @@
     <string name="updateordelete">Select Item to Update or Delete from this Order</string>
     <string name="update">Update Item Quantity</string>
     <string name="deleteitem">Delete Item</string>
+    <string name="btnDeleteFromOrder">Delete</string>
+    <string name="btnProceedToCheckout">Checkout</string>
     <string-array name="payment">
         <item>Debit</item>
         <item>Credit</item>
