@@ -17,82 +17,14 @@
         app:layout_constraintVertical_bias="0.13" />
 
     <Button
-        android:id="@+id/btnGoToAddress"
+        android:id="@+id/btnCheckout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Address"
+        android:text="@string/btnProceedToCheckout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listviewCart"
         app:layout_constraintVertical_bias="0.84000003" />
 
-    <TextView
-        android:id="@+id/textViewFoodID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Food ID"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnGoToAddress"
-        app:layout_constraintEnd_toStartOf="@+id/editTextQuantity"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listviewCart"
-        app:layout_constraintVertical_bias="0.49" />
-
-    <EditText
-        android:id="@+id/editTextQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Quantity"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/btnGoToAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listviewCart"
-        app:layout_constraintVertical_bias="0.49" />
-
-    <TextView
-        android:id="@+id/textViewUpdateorDeleteItems"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/updateordelete"
-        app:layout_constraintBottom_toTopOf="@+id/textViewFoodID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listviewCart"
-        app:layout_constraintVertical_bias="0.73" />
-
-    <Button
-        android:id="@+id/buttonUpdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:text="@string/update"
-        app:layout_constraintBottom_toTopOf="@+id/btnGoToAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.086"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFoodID"
-        app:layout_constraintVertical_bias="0.57" />
-
-    <Button
-        android:id="@+id/buttonDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/deleteitem"
-        app:layout_constraintBottom_toTopOf="@+id/btnGoToAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonUpdate"
-        app:layout_constraintTop_toBottomOf="@+id/editTextQuantity"
-        app:layout_constraintVertical_bias="0.57" />
-
-    <TextView
-        android:id="@+id/textViewPop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/buttonUpdate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFoodID"
-        app:layout_constraintVertical_bias="0.59000003" />
 </androidx.constraintlayout.widget.ConstraintLayout>

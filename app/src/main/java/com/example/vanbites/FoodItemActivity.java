@@ -3,6 +3,10 @@ package com.example.vanbites;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.vanbites.entities.Food;
+import com.example.vanbites.entities.Order;
 import com.example.vanbites.entities.OrderItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,13 +31,13 @@ import com.google.firebase.storage.StorageReference;
 
 public class FoodItemActivity extends AppCompatActivity {
 
-
     private final long TWO_MB = 2048 * 2048;
     private final String IMAGE_FORMAT = ".jpg";
     private final String IMAGE_LOCATION = "/images/4x3/";
+    private final static String DB_NAME = "VanbitesDB";
 
     private Food currentFood;
-    private OrderItem order;
+    private OrderItem orderItem;
     private int foodQuantity;
     private Bitmap bitmap;
     private String foodCategory, foodTitle, foodName, foodId, foodImg;
@@ -40,9 +45,12 @@ public class FoodItemActivity extends AppCompatActivity {
     // UI Fields
     private Button btnIncrementQuantity;
     private Button btnDecrementQuantity;
+    private Button btnAddToOrder;
     private EditText editQuantity;
     private ImageView foodImageView;
     private TextView textViewFoodTitle;
+
+    SQLiteDatabase VanbitesDB;
 
     /**
      * Setting up Firebase Storage
@@ -69,6 +77,8 @@ public class FoodItemActivity extends AppCompatActivity {
                 //        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         );
 
+        openDB();
+
         // Initialize essential resources
         initializeEssentialResources();
 
@@ -77,6 +87,7 @@ public class FoodItemActivity extends AppCompatActivity {
 
         btnIncrementQuantity = findViewById(R.id.btnIncrementFoodQuantity);
         btnDecrementQuantity = findViewById(R.id.btnDecrementFoodQuantity);
+        btnAddToOrder = findViewById(R.id.btnAddToOrder);
 
         // Grab the Number Text View that shows food item quantity for manipulation
         editQuantity = findViewById(R.id.editFoodQuantity);
@@ -84,15 +95,30 @@ public class FoodItemActivity extends AppCompatActivity {
         // Initialize the image view to be updated on loading
         foodImageView = findViewById(R.id.imageViewFood);
 
+        // Get food id from bundle
+        foodId = getIntent().getExtras().getString("ITEM_ID", "");
+        // open or connect to db here
+        currentFood = getFoodFromDB(foodId);
+        orderItem = new OrderItem(currentFood, foodQuantity);
+
+        // Set the cost of the item in the add to order button
+        btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+
+
         btnIncrementQuantity.setOnClickListener((View view) -> {
             foodQuantity++;
+            orderItem.incrementQuantity();
+            btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
             editQuantity.setText(Integer.toString(foodQuantity));
         });
 
         btnDecrementQuantity.setOnClickListener((View view) -> {
+            // Ensure the food quantity cannot go below 1
             if (foodQuantity > 1) {
                 foodQuantity--;
             }
+            orderItem.incrementQuantity();
+            btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
             editQuantity.setText(Integer.toString(foodQuantity));
         });
 
@@ -104,6 +130,8 @@ public class FoodItemActivity extends AppCompatActivity {
                 String newQuantity = s.toString();
                 try {
                     foodQuantity = Integer.parseInt(newQuantity);
+                    orderItem.setQuantity(foodQuantity);
+                    btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
                 } catch (NumberFormatException e) {
                     Log.d("FoodActivity", "Error converting foodQuantity to int -> " + e.getMessage());
                 }
@@ -120,6 +148,14 @@ public class FoodItemActivity extends AppCompatActivity {
             }
         });
 
+        btnAddToOrder.setOnClickListener((View view) -> {
+            AddOrderItemToCart();
+            Toast.makeText(this, "Added " + currentFood.getName() + " to Order", Toast.LENGTH_LONG).show();
+            foodQuantity = 1;
+            orderItem.setQuantity(foodQuantity);
+            btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+        });
+
         getImageFromFirebase();
     }
 
@@ -127,19 +163,10 @@ public class FoodItemActivity extends AppCompatActivity {
         // Need to Initialise FirebaseApp to utilize firebase functions
         FirebaseApp.initializeApp(getApplicationContext());
 
-        // Initializing the base url for firebase
-        baseUrl = getString(R.string.storageReferenceImages);
-        firebaseStorage = FirebaseStorage.getInstance(baseUrl);
+        firebaseStorage = FirebaseStorage.getInstance();
     }
 
     private void getImageFromFirebase() {
-        /**
-         * TODO:
-         * 1.   Get the Food Category from a Bundle,
-         * 2.   The FoodId or Name to retrieve the image location
-         * 3.   @param foodCategory YOU NEED TO INITIALIZE THIS VARIABLE
-         */
-
 
         foodCategory = getIntent().getExtras().getString("CAT", "");
         foodTitle = getIntent().getExtras().getString("ITEM_NAME", "");
@@ -150,9 +177,6 @@ public class FoodItemActivity extends AppCompatActivity {
         textViewFoodTitle.setText(foodTitle);
 
         foodName = foodTitle.replaceAll(" ", "_");
-
-        //Toast.makeText(FoodItemActivity.this, "" + foodCategory + " " + foodName + " " + foodId + " ", Toast.LENGTH_LONG).show();
-
 
         // Create a storage reference from our app
         StorageReference storageReference = firebaseStorage.getReference();
@@ -173,5 +197,65 @@ public class FoodItemActivity extends AppCompatActivity {
                 Log.d("FoodActivity", "Failed to download image -> " + exception.getMessage());
             }
         });
+    }
+
+    private Food getFoodFromDB(String foodId) {
+        String query = "SELECT * FROM Food WHERE FoodId = ?";
+        Food food = new Food();
+        try {
+            Cursor cursor = VanbitesDB.rawQuery(query, new String[] { foodId });
+            if(cursor != null && cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                double price = cursor.getDouble(2);
+                String description = cursor.getString(3);
+                String category = cursor.getString(4);
+                String imageLocation = cursor.getString(5);
+
+                food = new Food(id, name, price, description, category, imageLocation);
+                Log.d("FoodItem", "Food successfully retrieved from database");
+            }
+        } catch (Exception exception) {
+            Log.d("FoodItem", "Could not find food with id: " + foodId + " in the database");
+            Log.d("FoodItem", exception.getMessage());
+        }
+        return food;
+    }
+
+    private void openDB() {
+        try {
+            VanbitesDB = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
+        } catch (SQLiteException exception) {
+            Log.d("FoodItem", "Error Connecting to Database" + exception.getMessage());
+        }
+    }
+
+    /**
+     * Adds the order item containing the food to the database for cart checkout
+     */
+    private void AddOrderItemToCart() {
+        long result = 0;
+
+        ContentValues values = new ContentValues();
+
+        values.put("FoodId", orderItem.getFood().getId());
+        //values.put("FoodName", orderItem.getFood().getName());
+        values.put("Quantity", orderItem.getQuantity());
+        //values.put("Price", orderItem.getCost());
+
+        try {
+            result = VanbitesDB.insertOrThrow("Cart", null, values);
+            if(result != -1) {
+                Log.d("FoodItem", "Inserted Order with food id: "
+                            + orderItem.getFood().getId()
+                            + " and quantity: " + orderItem.getQuantity());
+            } else {
+                Log.d("FoodItem", "Error inserting order with food id: " + orderItem.getFood().getId());
+            }
+        } catch (Exception e) {
+            Log.d("FoodItem", e.getMessage());
+        }
+
     }
 }

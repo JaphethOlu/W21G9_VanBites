@@ -5,98 +5,62 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.vanbites.entities.Food;
+import com.example.vanbites.entities.Order;
+import com.example.vanbites.entities.OrderItem;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
-    SQLiteDatabase VanbitesDB;
+    private List<OrderItem> orderItemsList;
+    private Order order;
 
+    private ListView listView;
+    private Button btnCheckout;
+
+    SQLiteDatabase VanbitesDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        ListView listView = findViewById(R.id.listviewCart);
-        TextView textViewFoodID=findViewById(R.id.textViewFoodID);
-        EditText editTextQuantity = findViewById(R.id.editTextQuantity);
-        Button buttonUpdate=findViewById(R.id.buttonUpdate);
-        Button buttonDelete=findViewById(R.id.buttonDelete);
-        TextView textViewPop=findViewById(R.id.textViewPop);
+
+        listView = findViewById(R.id.listviewCart);
+
         openDB();
-        List<String[]> cartFromDB = browseCart();
-        listView.setAdapter(new CartAdapter(cartFromDB));
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] s = cartFromDB.get(position);
-                textViewFoodID.setText(s[0]);
-                editTextQuantity.setText(s[2]);
-            }
-        });
+        // Get the order items from cart and add them to the list
+        orderItemsList = retrieveCart();
+        order = new Order(orderItemsList);
 
-        buttonUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(textViewFoodID.getText().equals(""))
-                {
-                    textViewPop.setText("Please select an Item to Update");
-                }else if(Integer.parseInt(String.valueOf(editTextQuantity.getText())) == 0) {
-                    textViewPop.setText("Please enter a quantity. Use Delete Button to delete an Item");
-                }
-                else if(Integer.parseInt(String.valueOf(editTextQuantity.getText())) < 0) {
-                    textViewPop.setText("Please enter a positive value for quantity");
-                }
-                else {
-                    try {
-                       int quantity = Integer.parseInt(String.valueOf(editTextQuantity.getText()));
-                      if(quantity>0){
-                       int id = Integer.parseInt(String.valueOf(textViewFoodID.getText()));
-                       updateCart(id, quantity);
-                       List<String[]> cartFromDB = browseCart();
-                       listView.setAdapter(new CartAdapter(cartFromDB));}
-                       else{
-                           textViewPop.setText("Come on dude");
-                       }
+        CartAdapter adapter = new CartAdapter(orderItemsList);
+        adapter.registerDataSetObserver(observer);
+        listView.setAdapter(adapter);
 
-                   }catch (NumberFormatException ex){
-                       textViewPop.setText("Enter a Valid Number");
-                   }
+        btnCheckout = findViewById(R.id.btnCheckout);
 
-                }
+        // Calculate and display the total cost of all cart items in btnCheckout
+        updateCheckoutTotal();
 
-            }
-        });
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
+        btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(textViewFoodID.getText().equals(""))
-                {
-                    textViewPop.setText("Please select an Item to Delete");
-                }else{
-                    int id = Integer.parseInt(String.valueOf(textViewFoodID.getText()));
-                    deleteFromCart(id);
-                    List<String[]> cartFromDB = browseCart();
-                    listView.setAdapter(new CartAdapter(cartFromDB));}
-            }
-        });
+                // Update the cart with the list of orderItemsList
+                updateCart();
 
-        Button btnGoToAddress = findViewById(R.id.btnGoToAddress);
-        btnGoToAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                // Start the delivery address activity
                 Intent intent = new Intent(CartActivity.this, MapActivity.class);
                 startActivity(intent);
             }
@@ -104,70 +68,148 @@ public class CartActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is triggered whenever an item is increased, decreased or deleted from the cart
+     */
+    DataSetObserver observer = new DataSetObserver() {
+        @Override
+        public void onChanged() {
+            super.onChanged();
+            updateCheckoutTotal();
+        }
+    };
+
+    /**
+     * This function uses the Order class to calculate the totat cost of all items in the cart.
+     * The total cost is placed in the checkout button
+     */
+    private void updateCheckoutTotal() {
+        double orderTotal = order.calculateTotalCost();
+        btnCheckout.setText("Checkout $" + orderTotal);
+    }
+
     private void openDB() {
         try {
             VanbitesDB = openOrCreateDatabase("VanbitesDB", MODE_PRIVATE, null);
-            Toast.makeText(this, "DB Opened", Toast.LENGTH_SHORT).show();
+            Log.d("Cart", "Successfully opened the database in cart activity");
         } catch (Exception ex) {
             Log.d("Cart", "DB Open Error" + ex.getMessage());
         }
     }
 
-    private List<String[]> browseCart() {
-        List<String[]> CartList = new ArrayList<>();
-        String[] head = new String[3];
-        head[0] = "Food ID";
-        head[1] = "Item";
-        head[2] = "Quantity";
-        CartList.add(head);
+    /**
+     * Retrieve items from the cart
+     * @return returns a OrderItem List
+     */
+    private List<OrderItem> retrieveCart() {
 
-        String queryStr = "SELECT FoodId,FoodName,Quantity FROM Cart;";
+        List<OrderItem> CartList = new ArrayList<>();
+
+        String queryStr = "SELECT * FROM Food INNER JOIN Cart ON Food.FoodId = Cart.FoodId;";
 
         try {
             Cursor cursor = VanbitesDB.rawQuery(queryStr, null);
             if (cursor != null) {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    String[] eachRecArray = new String[3];
-                    eachRecArray[0] = String.valueOf(cursor.getInt(0));
-                    eachRecArray[1] = cursor.getString(1);
-                    eachRecArray[2] = String.valueOf(cursor.getInt(2));
-                    CartList.add(eachRecArray);
+
+                    // Create a new food item
+                    Food food = new Food();
+
+                    // Get the Item from query result
+                    food.setId(cursor.getInt(0));
+                    food.setName(cursor.getString(1));
+                    food.setPrice(cursor.getDouble(2));
+                    food.setDescription(cursor.getString(3));
+                    food.setCategory(cursor.getString(4));
+                    food.setImageLocation(cursor.getString(5));
+
+                    int quantity = cursor.getInt(7);
+
+                    // Create and order item
+                    OrderItem orderItem = new OrderItem(food, quantity);
+
+                    // Add order item to cart
+                    CartList.add(orderItem);
+
                     cursor.moveToNext();
                 }
             }
 
         } catch (Exception ex) {
-            Log.d("Cart Show", "Cart Show Error" + ex.getMessage());
+            Log.d("Cart", "Error retrieving items from cart table: " + ex.getMessage());
         }
-
         return CartList;
     }
-    private boolean updateCart(int foodId,int quantity)
-    {
-        String queryStr="SELECT Quantity FROM Cart WHERE FoodId = ?;";
+
+    /*
+    private boolean updateFoodQuantityCart(int foodId, int quantity) {
+        String queryStr = "SELECT Quantity FROM Cart WHERE FoodId = ?;";
         try {
-            Cursor cursor= VanbitesDB.rawQuery(queryStr,new String[]{String.valueOf(foodId)});
-            if(cursor!=null){
+            Cursor cursor = VanbitesDB.rawQuery(queryStr, new String[]{String.valueOf(foodId)});
+            if (cursor != null) {
                 cursor.moveToFirst();
-                ContentValues val=new ContentValues();
-                val.put("Quantity",quantity);
-                VanbitesDB.update("Cart",val,"FoodId = ?",new String[]{String.valueOf(foodId)});
-                Log.d("Cart Update","Changed Quantity for "+foodId);
-                return  true;
+                ContentValues val = new ContentValues();
+                val.put("Quantity", quantity);
+                VanbitesDB.update("Cart", val, "FoodId = ?", new String[]{String.valueOf(foodId)});
+                Log.d("Cart Update", "Changed Quantity for " + foodId);
+                return true;
             }
-        }catch (Exception ex){
-            Log.d("Cart Update","Error Updating Cart"+ex.getMessage());
+        } catch (Exception ex) {
+            Log.d("Cart Update", "Error Updating Cart" + ex.getMessage());
         }
-    return false;
+        return false;
     }
-    private  void deleteFromCart(int foodId)
-    {
+
+    private void deleteFromCart(int foodId) {
         try {
-                int result=VanbitesDB.delete("Cart","FoodId = ?",new String[]{String.valueOf(foodId)});
-        }catch (Exception ex){
-            Log.d("Delete Cart","Deletion Error"+ex.getMessage());
+            int result = VanbitesDB.delete("Cart", "FoodId = ?", new String[]{String.valueOf(foodId)});
+        } catch (Exception ex) {
+            Log.d("Delete Cart", "Deletion Error" + ex.getMessage());
         }
+    }
+    */
+
+    /**
+     * The only idea that came to mind when updating the cart is to drop and recreate the cart table using the items in the orderItemsList
+     */
+    private void updateCart() {
+
+        String dropCartTable = "DROP TABLE IF EXISTS Cart;";
+
+        String createCartTable = "CREATE TABLE Cart " +
+                "(FoodId INTEGER, Quantity INTEGER, FOREIGN KEY (FoodId) REFERENCES Food(FoodId));";
+
+        long result;
+
+        try {
+            // Drop Cart Table
+            VanbitesDB.execSQL(dropCartTable);
+            Log.d("Cart", "Successfully dropped Cart Table");
+
+            // Create Cart Table
+            VanbitesDB.execSQL(createCartTable);
+            Log.d("Cart", "Successfully created Cart Table");
+
+            ContentValues values = new ContentValues();
+
+            for (OrderItem orderItem : orderItemsList) {
+
+                values.put("FoodId", orderItem.getFood().getId());
+                values.put("Quantity", orderItem.getQuantity());
+
+                result = VanbitesDB.insertOrThrow("Cart", null, values);
+                if (result != -1) {
+                    Log.d("Cart", "Inserted into Cart FoodId: " + orderItem.getFood().getId() +
+                                            "\nQuantity: " + orderItem.getQuantity());
+                } else {
+                    Log.d("Cart", "Error inserting FoodId: " + orderItem.getFood().getId());
+                }
+            }
+        } catch (SQLiteException exception) {
+            Log.d("Cart", "Error Updating Cart table -> " + exception.getMessage());
+        }
+
     }
 
 }
