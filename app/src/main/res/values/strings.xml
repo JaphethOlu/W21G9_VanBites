@@ -21,6 +21,9 @@
     <string name="btnProceedToCheckout">Checkout</string>
     <string name="deleteaddress">Delete</string>
     <string name="deleteaddresss">Delete Address</string>
+    <string name="total">Total (Without Tax)</string>
+    <string name="totalwithtax">"Total With Tax : "</string>
+    <string name="to">Total (With Tax)</string>
     <string-array name="payment">
         <item>Debit</item>
         <item>Credit</item>
