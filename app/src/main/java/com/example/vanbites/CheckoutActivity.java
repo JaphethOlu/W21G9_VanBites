@@ -65,8 +65,8 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void browseCart() {
-        String queryStr = "SELECT Name, Quantity FROM Food INNER JOIN Cart ON Food.FoodId=Cart.FoodId;";
-
+        String queryStr = "SELECT Name, Quantity,Price FROM Food INNER JOIN Cart ON Food.FoodId=Cart.FoodId;";
+        Double total=0.0;
         try {
             Cursor cursor=VanbitesDB.rawQuery(queryStr,null);
             String headRec=String.format("%-15s%-15s\n","Name","Quanity");
@@ -74,10 +74,18 @@ public class CheckoutActivity extends AppCompatActivity {
             if(cursor!=null){
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()){
+                    Double price=cursor.getDouble(2);
+                    int quantity = cursor.getInt(1);
+                    total=total + (price*quantity);
                     String eachRec= String.format("%-15s%-15d\n",cursor.getString(0),cursor.getInt(1));
                     outputText.append(eachRec);
                     cursor.moveToNext();
                 }
+                TextView textViewTotal=findViewById(R.id.textViewtotal) ;
+                textViewTotal.setText(String.valueOf(total));
+                Double totalWithTax=total*1.12;
+                TextView textViewTotalwithTax=findViewById(R.id.textViewwithTax);
+                textViewTotalwithTax.setText(String.valueOf(totalWithTax));
             }
 
         } catch (Exception ex) {

@@ -84,7 +84,8 @@ public class CartActivity extends AppCompatActivity {
      * The total cost is placed in the checkout button
      */
     private void updateCheckoutTotal() {
-        double orderTotal = order.calculateTotalCost();
+         double orderTotal = order.calculateTotalCost();
+
         btnCheckout.setText("Checkout $" + orderTotal);
     }
 

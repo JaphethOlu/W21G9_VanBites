@@ -7,7 +7,7 @@
     tools:context=".CheckoutActivity">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewSelectAddLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Selected Address"
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/etDelivery" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/txtSelectPaymentLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select A Payent Method"
@@ -71,6 +71,47 @@
         app:layout_constraintTop_toBottomOf="@+id/txtAddress"
         app:layout_constraintVertical_bias="0.71000004" />
 
+    <TextView
+        android:id="@+id/txtViewtotalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/total"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlaceOrder"
+        app:layout_constraintEnd_toStartOf="@+id/textViewtotal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPayment" />
+
+    <TextView
+        android:id="@+id/textViewtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlaceOrder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.674"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPayment" />
+
+    <TextView
+        android:id="@+id/textViewtotaltaxLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/to"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlaceOrder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewtotalLabel" />
+
+    <TextView
+        android:id="@+id/textViewwithTax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlaceOrder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.39"
+        app:layout_constraintStart_toEndOf="@+id/textViewtotaltaxLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewtotal" />
+
     <Button
         android:id="@+id/btnPlaceOrder"
         android:layout_width="wrap_content"
@@ -78,7 +119,9 @@
         android:text="@string/order"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPayment" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPayment"
+        app:layout_constraintVertical_bias="0.884" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
