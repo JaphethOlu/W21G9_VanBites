@@ -51,6 +51,7 @@ public class FoodItemActivity extends AppCompatActivity {
     private EditText editQuantity;
     private ImageView foodImageView;
     private TextView textViewFoodTitle;
+    private TextView textViewFoodDescription;
 
     SQLiteDatabase VanbitesDB;
 
@@ -88,6 +89,7 @@ public class FoodItemActivity extends AppCompatActivity {
         btnDecrementQuantity = findViewById(R.id.btnDecrementFoodQuantity);
         btnAddToOrder = findViewById(R.id.btnAddToOrder);
         btnGoToCheckout = findViewById(R.id.btnGoToCheckout);
+        textViewFoodDescription = findViewById(R.id.textViewFoodDescription);
 
         // Grab the Number Text View that shows food item quantity for manipulation
         editQuantity = findViewById(R.id.editFoodQuantity);
@@ -103,6 +105,9 @@ public class FoodItemActivity extends AppCompatActivity {
 
         // Set the cost of the item in the add to order button
         btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+
+        // Set the food description
+        textViewFoodDescription.setText(currentFood.getDescription());
 
         /**
          * Increases the quantity of the food item
