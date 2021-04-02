@@ -26,6 +26,7 @@ public class CartActivity extends AppCompatActivity {
 
     private List<OrderItem> orderItemsList;
     private Order order;
+    private boolean didOrderItemsListChange = false;
 
     private ListView listView;
     private Button btnCheckout;
@@ -75,6 +76,7 @@ public class CartActivity extends AppCompatActivity {
         @Override
         public void onChanged() {
             super.onChanged();
+            didOrderItemsListChange = true;
             updateCheckoutTotal();
         }
     };
@@ -210,6 +212,18 @@ public class CartActivity extends AppCompatActivity {
         } catch (SQLiteException exception) {
             Log.d("Cart", "Error Updating Cart table -> " + exception.getMessage());
         }
+
+    }
+
+    @Override
+    protected void onStop() {
+        // Call super class method first
+        super.onStop();
+
+        // Check and update the cart if there was a change in the items
+        if(didOrderItemsListChange) updateCart();
+
+        didOrderItemsListChange = false;
 
     }
 
