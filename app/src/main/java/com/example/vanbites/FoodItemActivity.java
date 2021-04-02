@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -46,9 +47,11 @@ public class FoodItemActivity extends AppCompatActivity {
     private Button btnIncrementQuantity;
     private Button btnDecrementQuantity;
     private Button btnAddToOrder;
+    private Button btnGoToCheckout;
     private EditText editQuantity;
     private ImageView foodImageView;
     private TextView textViewFoodTitle;
+    private TextView textViewFoodDescription;
 
     SQLiteDatabase VanbitesDB;
 
@@ -57,9 +60,6 @@ public class FoodItemActivity extends AppCompatActivity {
      * See for more details https://firebase.google.com/docs/storage/android/start?authuser=0
      */
     private FirebaseStorage firebaseStorage;
-
-    // Base url for accessing out firebase
-    private String baseUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +88,8 @@ public class FoodItemActivity extends AppCompatActivity {
         btnIncrementQuantity = findViewById(R.id.btnIncrementFoodQuantity);
         btnDecrementQuantity = findViewById(R.id.btnDecrementFoodQuantity);
         btnAddToOrder = findViewById(R.id.btnAddToOrder);
+        btnGoToCheckout = findViewById(R.id.btnGoToCheckout);
+        textViewFoodDescription = findViewById(R.id.textViewFoodDescription);
 
         // Grab the Number Text View that shows food item quantity for manipulation
         editQuantity = findViewById(R.id.editFoodQuantity);
@@ -104,7 +106,12 @@ public class FoodItemActivity extends AppCompatActivity {
         // Set the cost of the item in the add to order button
         btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
 
+        // Set the food description
+        textViewFoodDescription.setText(currentFood.getDescription());
 
+        /**
+         * Increases the quantity of the food item
+         */
         btnIncrementQuantity.setOnClickListener((View view) -> {
             foodQuantity++;
             orderItem.incrementQuantity();
@@ -112,6 +119,9 @@ public class FoodItemActivity extends AppCompatActivity {
             editQuantity.setText(Integer.toString(foodQuantity));
         });
 
+        /**
+         * Decreases the quantity of the food item
+         */
         btnDecrementQuantity.setOnClickListener((View view) -> {
             // Ensure the food quantity cannot go below 1
             if (foodQuantity > 1) {
@@ -122,7 +132,16 @@ public class FoodItemActivity extends AppCompatActivity {
             editQuantity.setText(Integer.toString(foodQuantity));
         });
 
-        // An event listener that allows the user manually edit the foodQuantity
+        /**
+         * Takes you to the cart activity when triggered
+         */
+        btnGoToCheckout.setOnClickListener((View view) -> {
+            startActivity(new Intent(FoodItemActivity.this, CartActivity.class));
+        });
+
+        /**
+         * An event listener that allows the user manually edit the foodQuantity
+         */
         editQuantity.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -148,6 +167,9 @@ public class FoodItemActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Adds the food item and the selected quantity to the cart table in the database
+         */
         btnAddToOrder.setOnClickListener((View view) -> {
             AddOrderItemToCart();
             Toast.makeText(this, "Added " + currentFood.getName() + " to Order", Toast.LENGTH_LONG).show();
@@ -162,7 +184,6 @@ public class FoodItemActivity extends AppCompatActivity {
     private void initializeEssentialResources() {
         // Need to Initialise FirebaseApp to utilize firebase functions
         FirebaseApp.initializeApp(getApplicationContext());
-
         firebaseStorage = FirebaseStorage.getInstance();
     }
 
@@ -179,7 +200,10 @@ public class FoodItemActivity extends AppCompatActivity {
         foodName = foodTitle.replaceAll(" ", "_");
 
         // Create a storage reference from our app
+        // This contains the base link to the firebase location of the app
         StorageReference storageReference = firebaseStorage.getReference();
+
+        // This contains the urp pointing to the image in firebase storage
         StorageReference imagesReference = storageReference.child(IMAGE_LOCATION + foodCategory + "/" + foodName + IMAGE_FORMAT);
 
         // getBytes(TWO_MB) restrict the size of the image resource
@@ -199,6 +223,11 @@ public class FoodItemActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This gets all the food details from the database
+     * @param foodId is the id of the food item
+     * @return A food object of the current food retrieved from the database
+     */
     private Food getFoodFromDB(String foodId) {
         String query = "SELECT * FROM Food WHERE FoodId = ?";
         Food food = new Food();
@@ -232,7 +261,7 @@ public class FoodItemActivity extends AppCompatActivity {
     }
 
     /**
-     * Adds the order item containing the food to the database for cart checkout
+     * Adds the Order item containing the food and quantity to the database for cart checkout
      */
     private void AddOrderItemToCart() {
         long result = 0;
