@@ -2,10 +2,12 @@ package com.example.vanbites;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -95,13 +97,38 @@ public class MapActivity extends AppCompatActivity {
                     addAddress(textEdit,null,null,null);
                 }
 
-                if(!textView.isEmpty()) {
+                if(textView=="") {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+                    builder.setCancelable(true);
+                    builder.setTitle("Address");
+                    builder.setMessage("Please select an Address for delivery");
+
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+
+                }else {
                     Address address = new Address(textView);
                     Intent intent = new Intent(MapActivity.this, CheckoutActivity.class);
                     intent.putExtra("address", address);
                     // intent.putExtra("order",new Order("edit","text"));
                     startActivity(intent);
                 }
+
+
+
+
 
             }
         });
@@ -126,7 +153,7 @@ public class MapActivity extends AppCompatActivity {
     private void openDB() {
         try {
             VanbitesDB = openOrCreateDatabase("VanbitesDB", MODE_PRIVATE, null);
-            Toast.makeText(this, "DB Opened", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Let's select an address", Toast.LENGTH_SHORT).show();
         } catch (Exception ex) {
             Log.d("MapActivity", "DB Open Error" + ex.getMessage());
         }

@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 public class CheckoutActivity extends AppCompatActivity {
     SQLiteDatabase VanbitesDB;
     StringBuilder outputText;
@@ -46,7 +48,9 @@ public class CheckoutActivity extends AppCompatActivity {
                 String foodItems = txtFood.getText().toString();
                 String addressforOrder = txtAddress.getText().toString();
                 String paymentMethod = spinnerPayment.getSelectedItem().toString();
+
                 String deliveryNotes = editDelivery.getText().toString();
+
                 addToOrderTable(foodid,foodItems,addressforOrder,paymentMethod,deliveryNotes);
                 //foodid=foodid+1;
                 //create intent and send to new activity if insert successfull
@@ -58,7 +62,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private void openDB() {
         try {
             VanbitesDB = openOrCreateDatabase("VanbitesDB", MODE_PRIVATE, null);
-            Toast.makeText(this, "DB Opened", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Let's checkout", Toast.LENGTH_SHORT).show();
         } catch (Exception ex) {
             Log.d("Cart", "DB Open Error" + ex.getMessage());
         }
@@ -69,8 +73,8 @@ public class CheckoutActivity extends AppCompatActivity {
         Double total=0.0;
         try {
             Cursor cursor=VanbitesDB.rawQuery(queryStr,null);
-            String headRec=String.format("%-15s%-15s\n","Name","Quanity");
-            outputText.append(headRec);
+            //String headRec=String.format("%-15s%-15s\n","Name","Quanity");
+            //outputText.append(headRec);
             if(cursor!=null){
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()){
@@ -81,9 +85,11 @@ public class CheckoutActivity extends AppCompatActivity {
                     outputText.append(eachRec);
                     cursor.moveToNext();
                 }
+
                 TextView textViewTotal=findViewById(R.id.textViewtotal) ;
+
                 textViewTotal.setText(String.valueOf(total));
-                Double totalWithTax=total*1.12;
+                Double totalWithTax= total*1.12;
                 TextView textViewTotalwithTax=findViewById(R.id.textViewwithTax);
                 textViewTotalwithTax.setText(String.valueOf(totalWithTax));
             }
