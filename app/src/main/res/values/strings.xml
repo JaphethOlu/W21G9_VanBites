@@ -25,6 +25,7 @@
     <string name="totalwithtax">"Total With Tax : "</string>
     <string name="to">Total (With Tax)</string>
     <string name="btnGoToCheckout">Go To Checkout</string>
+    <string name="textViewYourOrder">Your Order</string>
     <string-array name="payment">
         <item>Debit</item>
         <item>Credit</item>
