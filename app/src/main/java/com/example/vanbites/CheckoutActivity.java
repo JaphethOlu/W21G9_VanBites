@@ -14,9 +14,27 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.vanbites.entities.Food;
+import com.example.vanbites.entities.Order;
+import com.example.vanbites.entities.OrderItem;
+
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckoutActivity extends AppCompatActivity {
+
+    private EditText editDelivery;
+    private TextView txtAddress;
+    private Spinner spinnerPayment;
+    private Button btnPlaceOrder;
+    private TextView txtFood;
+    private TextView textViewTotal;
+    private TextView textViewTotalWithTax;
+
+    private List<OrderItem> orderItems;
+    private Order order;
+
     SQLiteDatabase VanbitesDB;
     StringBuilder outputText;
 
@@ -25,25 +43,40 @@ public class CheckoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
-        EditText editDelivery = findViewById(R.id.etDelivery);
-        TextView txtAddress = findViewById(R.id.txtAddress);
-        Spinner spinnerPayment = findViewById(R.id.spinnerPayment);
-        Button btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
-        TextView txtFood = findViewById(R.id.txtFoodItems);
+        editDelivery = findViewById(R.id.etDelivery);
+        txtAddress = findViewById(R.id.txtAddress);
+        spinnerPayment = findViewById(R.id.spinnerPayment);
+        btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
+        txtFood = findViewById(R.id.txtFoodItems);
+        textViewTotal = findViewById(R.id.textViewtotal);
+        textViewTotalWithTax = findViewById(R.id.textViewwithTax);
+
 
         Address address = (Address) getIntent().getParcelableExtra("address");
-        String adressFinal = address.getAddress();
+        String addressFinal = address.getAddress();
 
-        txtAddress.setText(adressFinal);
+        txtAddress.setText(addressFinal);
         openDB();
         outputText = new StringBuilder();
-        browseCart();
+
+        orderItems = retrieveCart();
+
+        order = new Order(orderItems);
+
+        // Get the cart total
+        double totalWithTax = order.calculateTotalCost();
+        double total = order.getSubTotal();
+
+        // Display the cart total
+        textViewTotal.setText(String.valueOf(total));
+        textViewTotalWithTax.setText(String.valueOf(totalWithTax));
+
         txtFood.setText(outputText.toString());
 
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int foodid=2;
+                int foodid = 2;
                 //adding to order table
                 String foodItems = txtFood.getText().toString();
                 String addressforOrder = txtAddress.getText().toString();
@@ -51,7 +84,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 String deliveryNotes = editDelivery.getText().toString();
 
-                addToOrderTable(foodid,foodItems,addressforOrder,paymentMethod,deliveryNotes);
+                addToOrderTable(foodid, foodItems, addressforOrder, paymentMethod, deliveryNotes);
                 //foodid=foodid+1;
                 //create intent and send to new activity if insert successfull
             }
@@ -62,46 +95,56 @@ public class CheckoutActivity extends AppCompatActivity {
     private void openDB() {
         try {
             VanbitesDB = openOrCreateDatabase("VanbitesDB", MODE_PRIVATE, null);
-            Toast.makeText(this, "Let's checkout", Toast.LENGTH_SHORT).show();
         } catch (Exception ex) {
-            Log.d("Cart", "DB Open Error" + ex.getMessage());
+            Log.d("Checkout", "DB Open Error" + ex.getMessage());
         }
     }
 
-    private void browseCart() {
-        String queryStr = "SELECT Name, Quantity,Price FROM Food INNER JOIN Cart ON Food.FoodId=Cart.FoodId;";
-        Double total=0.0;
+    private List<OrderItem> retrieveCart() {
+
+        List<OrderItem> CartList = new ArrayList<>();
+
+        String queryStr = "SELECT * FROM Food INNER JOIN Cart ON Food.FoodId = Cart.FoodId;";
+
         try {
-            Cursor cursor=VanbitesDB.rawQuery(queryStr,null);
-            //String headRec=String.format("%-15s%-15s\n","Name","Quanity");
-            //outputText.append(headRec);
-            if(cursor!=null){
+            Cursor cursor = VanbitesDB.rawQuery(queryStr, null);
+            if (cursor != null) {
                 cursor.moveToFirst();
-                while (!cursor.isAfterLast()){
-                    Double price=cursor.getDouble(2);
-                    int quantity = cursor.getInt(1);
-                    total=total + (price*quantity);
-                    String eachRec= String.format("%-15s%-15d\n",cursor.getString(0),cursor.getInt(1));
+                while (!cursor.isAfterLast()) {
+
+                    // Create a new food item
+                    Food food = new Food();
+
+                    // Get the Item from query result
+                    food.setId(cursor.getInt(0));
+                    food.setName(cursor.getString(1));
+                    food.setPrice(cursor.getDouble(2));
+                    food.setDescription(cursor.getString(3));
+                    food.setCategory(cursor.getString(4));
+                    food.setImageLocation(cursor.getString(5));
+
+                    int quantity = cursor.getInt(7);
+
+                    String eachRec = String.format("%-15s%-15d\n", food.getName(), quantity);
                     outputText.append(eachRec);
+
+                    // Create and order item
+                    OrderItem orderItem = new OrderItem(food, quantity);
+
+                    // Add order item to cart
+                    CartList.add(orderItem);
+
                     cursor.moveToNext();
                 }
-
-                TextView textViewTotal=findViewById(R.id.textViewtotal) ;
-
-                textViewTotal.setText(String.valueOf(total));
-                Double totalWithTax= total*1.12;
-                TextView textViewTotalwithTax=findViewById(R.id.textViewwithTax);
-                textViewTotalwithTax.setText(String.valueOf(totalWithTax));
             }
 
         } catch (Exception ex) {
-            Log.d("Cart", "Items not Shown" + ex.getMessage());
+            Log.d("Checkout", "Error retrieving items from cart table: " + ex.getMessage());
         }
-
+        return CartList;
     }
 
-    private void addToOrderTable(int id,String item,String deliveryAddress,String payment,String deliveryNote)
-    {
+    private void addToOrderTable(int id, String item, String deliveryAddress, String payment, String deliveryNote) {
         String dropOrderTable = "DROP TABLE IF EXISTS Orders;";
         String createOrdersTable = "CREATE TABLE Orders " +
                 "(OrderId INTEGER PRIMARY KEY, FoodItems TEXT, Address TEXT, Payment TEXT, DeliveryNotes TEXT);";
@@ -110,20 +153,19 @@ public class CheckoutActivity extends AppCompatActivity {
 
         long result;
         ContentValues val = new ContentValues();
-        val.put("OrderId",id);
-        val.put("FoodItems",item);
-        val.put("Address",deliveryAddress);
-        val.put("Payment",payment);
-        val.put("DeliveryNotes",deliveryNote);
+        val.put("OrderId", id);
+        val.put("FoodItems", item);
+        val.put("Address", deliveryAddress);
+        val.put("Payment", payment);
+        val.put("DeliveryNotes", deliveryNote);
 
-        try{
-            result = VanbitesDB.insert("Orders",null,val);
-            if (result!=-1)
-            {
-                Log.d("Insert Order Table","Success" );
+        try {
+            result = VanbitesDB.insert("Orders", null, val);
+            if (result != -1) {
+                Log.d("Insert Order Table", "Success");
             }
-        }catch (Exception ex){
-            Log.d("Insert Order Table","Insert Failed" + ex.getMessage());
+        } catch (Exception ex) {
+            Log.d("Insert Order Table", "Insert Failed" + ex.getMessage());
         }
     }
 

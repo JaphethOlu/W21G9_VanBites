@@ -11,6 +11,7 @@ public class Order {
     private List<OrderItem> items;
     private double taxRate = .12; // 12% tax estimate
     private BigDecimal tax;
+    private BigDecimal subTotal;
     private BigDecimal total;
 
     public Order(List<OrderItem> items) {
@@ -18,7 +19,11 @@ public class Order {
     }
 
     public double getTax() {
-        return tax.doubleValue();
+        return tax.setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    public double getSubTotal() {
+        return subTotal.setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     public double getTotal() {
@@ -30,14 +35,15 @@ public class Order {
      */
     public double calculateTotalCost() {
 
-        BigDecimal sum = new BigDecimal("0");
+        subTotal = new BigDecimal("0");
 
         for(OrderItem item : items) {
-            sum = sum.add(item.getCostInBigDecimal());
+            subTotal = subTotal.add(item.getCostInBigDecimal());
         }
 
-        tax = sum.multiply(BigDecimal.valueOf(taxRate));
-        total = sum.add(tax).setScale(2, RoundingMode.HALF_UP);
+        tax = subTotal.multiply(BigDecimal.valueOf(taxRate));
+        total = subTotal.add(tax);
+        total = total.setScale(2, RoundingMode.HALF_UP);
 
         return total.doubleValue();
     }
