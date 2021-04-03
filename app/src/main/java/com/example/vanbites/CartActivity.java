@@ -145,34 +145,6 @@ public class CartActivity extends AppCompatActivity {
         return CartList;
     }
 
-    /*
-    private boolean updateFoodQuantityCart(int foodId, int quantity) {
-        String queryStr = "SELECT Quantity FROM Cart WHERE FoodId = ?;";
-        try {
-            Cursor cursor = VanbitesDB.rawQuery(queryStr, new String[]{String.valueOf(foodId)});
-            if (cursor != null) {
-                cursor.moveToFirst();
-                ContentValues val = new ContentValues();
-                val.put("Quantity", quantity);
-                VanbitesDB.update("Cart", val, "FoodId = ?", new String[]{String.valueOf(foodId)});
-                Log.d("Cart Update", "Changed Quantity for " + foodId);
-                return true;
-            }
-        } catch (Exception ex) {
-            Log.d("Cart Update", "Error Updating Cart" + ex.getMessage());
-        }
-        return false;
-    }
-
-    private void deleteFromCart(int foodId) {
-        try {
-            int result = VanbitesDB.delete("Cart", "FoodId = ?", new String[]{String.valueOf(foodId)});
-        } catch (Exception ex) {
-            Log.d("Delete Cart", "Deletion Error" + ex.getMessage());
-        }
-    }
-    */
-
     /**
      * The only idea that came to mind when updating the cart is to drop and recreate the cart table using the items in the orderItemsList
      */

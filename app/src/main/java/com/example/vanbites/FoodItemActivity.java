@@ -269,9 +269,7 @@ public class FoodItemActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
 
         values.put("FoodId", orderItem.getFood().getId());
-        //values.put("FoodName", orderItem.getFood().getName());
         values.put("Quantity", orderItem.getQuantity());
-        //values.put("Price", orderItem.getCost());
 
         try {
             result = VanbitesDB.insertOrThrow("Cart", null, values);
