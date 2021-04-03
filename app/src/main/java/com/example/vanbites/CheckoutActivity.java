@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 public class CheckoutActivity extends AppCompatActivity {
     SQLiteDatabase VanbitesDB;
     StringBuilder outputText;
@@ -41,12 +43,14 @@ public class CheckoutActivity extends AppCompatActivity {
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int foodid=1;
+                int foodid=2;
                 //adding to order table
                 String foodItems = txtFood.getText().toString();
                 String addressforOrder = txtAddress.getText().toString();
                 String paymentMethod = spinnerPayment.getSelectedItem().toString();
+
                 String deliveryNotes = editDelivery.getText().toString();
+
                 addToOrderTable(foodid,foodItems,addressforOrder,paymentMethod,deliveryNotes);
                 //foodid=foodid+1;
                 //create intent and send to new activity if insert successfull
@@ -58,26 +62,36 @@ public class CheckoutActivity extends AppCompatActivity {
     private void openDB() {
         try {
             VanbitesDB = openOrCreateDatabase("VanbitesDB", MODE_PRIVATE, null);
-            Toast.makeText(this, "DB Opened", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Let's checkout", Toast.LENGTH_SHORT).show();
         } catch (Exception ex) {
             Log.d("Cart", "DB Open Error" + ex.getMessage());
         }
     }
 
     private void browseCart() {
+        String queryStr = "SELECT Name, Quantity,Price FROM Food INNER JOIN Cart ON Food.FoodId=Cart.FoodId;";
+        Double total=0.0;
         try {
-            String queryStr = "SELECT FoodName,Quantity,Price FROM Cart;";
-            String headStr = String.format("%-15s%-15s%-15s\n", "Name", "Quantity", "Price");
-            outputText.append(headStr);
-
-            Cursor cursor = VanbitesDB.rawQuery(queryStr, null);
-            if (cursor != null) {
+            Cursor cursor=VanbitesDB.rawQuery(queryStr,null);
+            //String headRec=String.format("%-15s%-15s\n","Name","Quanity");
+            //outputText.append(headRec);
+            if(cursor!=null){
                 cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
-                    String eachRec = String.format("%-15s%-15d%-15d\n", cursor.getString(0), cursor.getInt(1), cursor.getInt(2));
+                while (!cursor.isAfterLast()){
+                    Double price=cursor.getDouble(2);
+                    int quantity = cursor.getInt(1);
+                    total=total + (price*quantity);
+                    String eachRec= String.format("%-15s%-15d\n",cursor.getString(0),cursor.getInt(1));
                     outputText.append(eachRec);
                     cursor.moveToNext();
                 }
+
+                TextView textViewTotal=findViewById(R.id.textViewtotal) ;
+
+                textViewTotal.setText(String.valueOf(total));
+                Double totalWithTax= total*1.12;
+                TextView textViewTotalwithTax=findViewById(R.id.textViewwithTax);
+                textViewTotalwithTax.setText(String.valueOf(totalWithTax));
             }
 
         } catch (Exception ex) {
@@ -88,9 +102,15 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void addToOrderTable(int id,String item,String deliveryAddress,String payment,String deliveryNote)
     {
+        String dropOrderTable = "DROP TABLE IF EXISTS Orders;";
+        String createOrdersTable = "CREATE TABLE Orders " +
+                "(OrderId INTEGER PRIMARY KEY, FoodItems TEXT, Address TEXT, Payment TEXT, DeliveryNotes TEXT);";
+        VanbitesDB.execSQL(dropOrderTable);
+        VanbitesDB.execSQL(createOrdersTable);
+
         long result;
         ContentValues val = new ContentValues();
-        val.put("OrderId","OD"+id);
+        val.put("OrderId",id);
         val.put("FoodItems",item);
         val.put("Address",deliveryAddress);
         val.put("Payment",payment);
@@ -98,9 +118,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
         try{
             result = VanbitesDB.insert("Orders",null,val);
-            if (result==-1)
+            if (result!=-1)
             {
-                Log.d("Insert Order Table","Not able to insert" );
+                Log.d("Insert Order Table","Success" );
             }
         }catch (Exception ex){
             Log.d("Insert Order Table","Insert Failed" + ex.getMessage());

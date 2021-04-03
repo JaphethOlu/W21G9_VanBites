@@ -21,16 +21,35 @@
         android:gravity="center_vertical"
         android:background="@android:drawable/editbox_background"/>
 
-    <Button
-        android:id="@+id/btn_Checkout"
+    <ListView
+        android:id="@+id/listViewAddress"
         android:layout_width="wrap_content"
+        android:layout_height="298dp" >
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:insetTop="200dp"
-        android:text="@string/checkout" />
+        android:text="Selected Address : " />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/buttonDeleteAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deleteaddresss" />
+
+    <Button
+        android:id="@+id/btn_Checkout"
+        android:layout_width="wrap_content"
+        android:layout_height="84dp"
+        android:insetTop="20dp"
+        android:text="@string/checkout" />
 
 </LinearLayout>
