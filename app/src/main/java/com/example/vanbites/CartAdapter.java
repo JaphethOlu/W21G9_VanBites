@@ -17,10 +17,7 @@ import java.util.List;
 
 public class CartAdapter extends BaseAdapter {
 
-    SQLiteDatabase VanbitesDB;
-
     List<OrderItem> orderItems;
-
 
     public CartAdapter(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
@@ -53,17 +50,15 @@ public class CartAdapter extends BaseAdapter {
         // Get the current Food
         Food food = orderItem.getFood();
 
-
         TextView textViewFoodName = view.findViewById(R.id.textViewFoodName);
         TextView textViewQuantity = view.findViewById(R.id.textViewFoodQuantity);
         TextView txtViewPrice = view.findViewById(R.id.txtViewPrice);
         Button btnIncrementFood = view.findViewById(R.id.btnIncrementFood);
         Button btnDecrementFood = view.findViewById(R.id.btnDecrementFood);
         Button btnDeleteFromOrder = view.findViewById(R.id.btnDeleteFromOrder);
-        DecimalFormat decFormat = new DecimalFormat("$###,###.##");
 
         textViewFoodName.setText(food.getName());
-        txtViewPrice.setText(decFormat.format(orderItem.getCost()));
+        txtViewPrice.setText(String.valueOf(orderItem.getCost()));
         textViewQuantity.setText(String.valueOf(orderItem.getQuantity()));
 
         btnIncrementFood.setOnClickListener(new View.OnClickListener() {

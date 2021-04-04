@@ -33,7 +33,6 @@ public class CartActivity extends AppCompatActivity {
     private Button btnCheckout;
     private Button btnGoBack2;
     private TextView txtViewTotalCartPrice;
-    DecimalFormat decFormat;
 
     SQLiteDatabase VanbitesDB;
 
@@ -54,9 +53,6 @@ public class CartActivity extends AppCompatActivity {
         );
 
         listView = findViewById(R.id.listviewCart);
-
-        // Create the DecimalFormat Instance
-        decFormat = new DecimalFormat("$###,###.##");
 
         txtViewTotalCartPrice = findViewById(R.id.txtViewTotalCartPrice);
 
@@ -115,11 +111,7 @@ public class CartActivity extends AppCompatActivity {
      */
     private void updateCheckoutTotal() {
          double orderTotal = order.calculateTotalCost();
-
-
-        txtViewTotalCartPrice.setText("Subtotal: " + decFormat.format(orderTotal));
-
-        // btnCheckout.setText("Checkout $" + orderTotal);
+        txtViewTotalCartPrice.setText("Subtotal: " + orderTotal);
     }
 
     private void openDB() {
@@ -176,34 +168,6 @@ public class CartActivity extends AppCompatActivity {
         return CartList;
     }
 
-    /*
-    private boolean updateFoodQuantityCart(int foodId, int quantity) {
-        String queryStr = "SELECT Quantity FROM Cart WHERE FoodId = ?;";
-        try {
-            Cursor cursor = VanbitesDB.rawQuery(queryStr, new String[]{String.valueOf(foodId)});
-            if (cursor != null) {
-                cursor.moveToFirst();
-                ContentValues val = new ContentValues();
-                val.put("Quantity", quantity);
-                VanbitesDB.update("Cart", val, "FoodId = ?", new String[]{String.valueOf(foodId)});
-                Log.d("Cart Update", "Changed Quantity for " + foodId);
-                return true;
-            }
-        } catch (Exception ex) {
-            Log.d("Cart Update", "Error Updating Cart" + ex.getMessage());
-        }
-        return false;
-    }
-
-    private void deleteFromCart(int foodId) {
-        try {
-            int result = VanbitesDB.delete("Cart", "FoodId = ?", new String[]{String.valueOf(foodId)});
-        } catch (Exception ex) {
-            Log.d("Delete Cart", "Deletion Error" + ex.getMessage());
-        }
-    }
-    */
-
     /**
      * The only idea that came to mind when updating the cart is to drop and recreate the cart table using the items in the orderItemsList
      */
@@ -248,12 +212,11 @@ public class CartActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+
         // Call super class method first
         super.onStop();
-
         // Check and update the cart if there was a change in the items
         if(didOrderItemsListChange) updateCart();
-
         didOrderItemsListChange = false;
 
     }
