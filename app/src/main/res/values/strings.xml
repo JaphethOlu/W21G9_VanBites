@@ -24,7 +24,6 @@
     <string name="total">Total (Without Tax)</string>
     <string name="totalwithtax">"Total With Tax : "</string>
     <string name="to">Total (With Tax)</string>
-    <string name="btnGoToCheckout">Go to cart</string>
     <string name="priceHolder">$13.99</string>
     <string name="textArrowLeft"><![CDATA[<]]></string>
     <string name="txtBtnDelete">x</string>
@@ -38,6 +37,8 @@
     <string name="txtWithVanBites">with VanBites!</string>
     <string name="txtOrderPlaced">Your Order has been placed successfully</string>
     <string name="txtExpect">"You can expect your delivery by: "</string>
+    <string name="btnGoToCheckout">Go To Checkout</string>
+    <string name="textViewYourOrder">Your Order</string>
     <string-array name="payment">
         <item>Debit</item>
         <item>Credit</item>
