@@ -57,6 +57,9 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-storage'
 
+    // Firebase realtime database
     implementation 'com.firebaseui:firebase-ui-database:7.1.1'
+
+    // Square up image view library
     implementation 'com.squareup.picasso:picasso:2.71828'
 }
