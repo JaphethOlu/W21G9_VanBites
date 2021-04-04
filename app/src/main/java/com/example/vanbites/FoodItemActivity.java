@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,6 +27,7 @@ import com.example.vanbites.entities.Order;
 import com.example.vanbites.entities.OrderItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -51,7 +53,7 @@ public class FoodItemActivity extends AppCompatActivity {
     private Button btnIncrementQuantity;
     private Button btnDecrementQuantity;
     private Button btnAddToOrder;
-    private Button btnGoToCheckout;
+    private FloatingActionButton btnGoToCheckout;
     private Button btnGoBack;
     private EditText editQuantity;
     private ImageView foodImageView;
@@ -99,6 +101,7 @@ public class FoodItemActivity extends AppCompatActivity {
         textViewFoodDescription = findViewById(R.id.textViewFoodDescription);
         textViewPrice = findViewById(R.id.textViewPrice);
 
+        btnGoToCheckout.setColorFilter(Color.WHITE);
 
         btnGoBack.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -24,10 +24,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/txtViewCartActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:text="@string/txtCart"
+        android:textColor="#0D3B66"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/listviewCart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ListView
         android:id="@+id/listviewCart"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="450dp"
         android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +66,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:text="TextView"
         android:textColor="#0D3B66"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/btnCheckout"

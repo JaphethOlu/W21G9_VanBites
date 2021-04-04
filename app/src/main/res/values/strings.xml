@@ -24,13 +24,20 @@
     <string name="total">Total (Without Tax)</string>
     <string name="totalwithtax">"Total With Tax : "</string>
     <string name="to">Total (With Tax)</string>
-    <string name="btnGoToCheckout">Checkout</string>
+    <string name="btnGoToCheckout">Go to cart</string>
     <string name="priceHolder">$13.99</string>
     <string name="textArrowLeft"><![CDATA[<]]></string>
     <string name="txtBtnDelete">x</string>
     <string name="txtAddress">Selected address:</string>
     <string name="txtOrder">"Your order: "</string>
     <string name="txtSelectPayment">Select payment method</string>
+    <string name="txtCart">CART</string>
+    <string name="txtSelectAddress">SELECT ADDRESS</string>
+    <string name="txtCheckout">Checkout</string>
+    <string name="txtThankYou">Thank you for ordering</string>
+    <string name="txtWithVanBites">with VanBites!</string>
+    <string name="txtOrderPlaced">Your Order has been placed successfully</string>
+    <string name="txtExpect">"You can expect your delivery by: "</string>
     <string-array name="payment">
         <item>Debit</item>
         <item>Credit</item>

@@ -3,9 +3,11 @@ package com.example.vanbites;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,6 +50,8 @@ public class CheckoutActivity extends AppCompatActivity {
         TextView txtFood = findViewById(R.id.txtFoodItems);
         btnGoBack5 = findViewById(R.id.btnGoBack5);
 
+        txtFood.setMovementMethod(new ScrollingMovementMethod());
+
         btnGoBack5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +82,8 @@ public class CheckoutActivity extends AppCompatActivity {
                 addToOrderTable(foodid,foodItems,addressforOrder,paymentMethod,deliveryNotes);
                 //foodid=foodid+1;
                 //create intent and send to new activity if insert successfull
+
+                startActivity(new Intent(CheckoutActivity.this, OrderPlacedActivity.class));
             }
         });
 
