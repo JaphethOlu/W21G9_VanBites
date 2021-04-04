@@ -33,6 +33,7 @@ public class CartActivity extends AppCompatActivity {
     private Button btnCheckout;
     private Button btnGoBack2;
     private TextView txtViewTotalCartPrice;
+    DecimalFormat decFormat;
 
     SQLiteDatabase VanbitesDB;
 
@@ -51,6 +52,9 @@ public class CartActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         );
+
+        // Create the DecimalFormat Instance
+        decFormat = new DecimalFormat("$###,###.##");
 
         listView = findViewById(R.id.listviewCart);
 
@@ -111,7 +115,7 @@ public class CartActivity extends AppCompatActivity {
      */
     private void updateCheckoutTotal() {
          double orderTotal = order.calculateTotalCost();
-        txtViewTotalCartPrice.setText("Subtotal: " + orderTotal);
+        txtViewTotalCartPrice.setText("Subtotal: " + decFormat.format(orderTotal));
     }
 
     private void openDB() {

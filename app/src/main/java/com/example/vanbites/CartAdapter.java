@@ -18,6 +18,7 @@ import java.util.List;
 public class CartAdapter extends BaseAdapter {
 
     List<OrderItem> orderItems;
+    DecimalFormat decFormat;
 
     public CartAdapter(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
@@ -40,6 +41,8 @@ public class CartAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
+        // Create the DecimalFormat Instance
+        decFormat = new DecimalFormat("$###,###.##");
 
         if (view == null) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_cart, parent, false);
@@ -58,7 +61,7 @@ public class CartAdapter extends BaseAdapter {
         Button btnDeleteFromOrder = view.findViewById(R.id.btnDeleteFromOrder);
 
         textViewFoodName.setText(food.getName());
-        txtViewPrice.setText(String.valueOf(orderItem.getCost()));
+        txtViewPrice.setText(decFormat.format(orderItem.getCost()));
         textViewQuantity.setText(String.valueOf(orderItem.getQuantity()));
 
         btnIncrementFood.setOnClickListener(new View.OnClickListener() {

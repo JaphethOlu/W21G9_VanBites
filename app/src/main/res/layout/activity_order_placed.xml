@@ -80,7 +80,8 @@
         android:layout_width="371dp"
         android:layout_height="229dp"
         android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
-        app:srcCompat="@drawable/delivery"
-        tools:layout_editor_absoluteX="23dp" />
+        app:srcCompat="@drawable/delivery" />
 </androidx.constraintlayout.widget.ConstraintLayout>
