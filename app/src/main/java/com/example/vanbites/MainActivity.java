@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             VanbitesDB.execSQL(createOrdersTable);
             VanbitesDB.execSQL(createCartTable);
 
-            Toast.makeText(this, "Created DB", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Created DB", Toast.LENGTH_LONG).show();
 
             // Inserts the menu into the database
             insertMenu();

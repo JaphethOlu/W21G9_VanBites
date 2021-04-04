@@ -4,124 +4,223 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     tools:context=".CheckoutActivity">
+
+    <Button
+        android:id="@+id/btnGoBack5"
+        android:layout_width="65dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:text="@string/textArrowLeft"
+        android:textSize="29sp"
+        app:backgroundTint="#F95738"
+        app:cornerRadius="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:text="@string/txtCheckout"
+        android:textColor="#0D3B66"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewSelectAddLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewSelectAddLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selected Address"
-        app:layout_constraintBottom_toTopOf="@+id/txtAddress"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/txtAddress"
+        android:textColor="#0D3B66"
+        android:textColorHighlight="#0D3B66"
+        android:textColorHint="#FFFFFF"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="94dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="#0D3B66"
+        android:textColorHighlight="#0D3B66"
+        android:textColorHint="#FFFFFF"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.060000002" />
 
-    <EditText
-        android:id="@+id/etDelivery"
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/txtOrder"
+        android:textColor="#0D3B66"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDelivery" />
+
+    <EditText
+        android:id="@+id/etDelivery"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
         android:ems="10"
+        android:fontFamily="@font/roboto_medium"
         android:hint="Delivery Instructions"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerPayment"
+        android:textColor="#0D3B66"
+        android:textColorHighlight="#0D3B66"
+        android:textColorHint="#650D3B66"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAddress"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintTop_toBottomOf="@+id/txtAddress" />
 
     <TextView
         android:id="@+id/txtFoodItems"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerPayment"
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center_vertical"
+        android:scrollbars="vertical"
+        android:textColor="#F95738"
+        android:textColorHint="#FFFFFF"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDelivery" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/txtSelectPaymentLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select A Payent Method"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/txtSelectPayment"
+        android:textColor="#0D3B66"
+        android:textColorHighlight="#0D3B66"
+        android:textColorHint="#FFFFFF"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/spinnerPayment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtFoodItems"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/spinnerPayment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
         android:entries="@array/payment"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlaceOrder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAddress"
-        app:layout_constraintVertical_bias="0.71000004" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/txtViewtotalLabel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/roboto_medium"
         android:text="@string/total"
-        app:layout_constraintBottom_toTopOf="@+id/btnPlaceOrder"
-        app:layout_constraintEnd_toStartOf="@+id/textViewtotal"
+        android:textColor="#0D3B66"
+        android:textColorHighlight="#0D3B66"
+        android:textColorHint="#FFFFFF"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPayment" />
+        app:layout_constraintTop_toBottomOf="@+id/txtFoodItems" />
 
     <TextView
         android:id="@+id/textViewtotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btnPlaceOrder"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center_vertical"
+        android:textColor="#F95738"
+        android:textColorHint="#FFFFFF"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.674"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPayment" />
+        app:layout_constraintTop_toBottomOf="@+id/txtFoodItems" />
 
     <TextView
         android:id="@+id/textViewtotaltaxLabel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center_vertical"
         android:text="@string/to"
-        app:layout_constraintBottom_toTopOf="@+id/btnPlaceOrder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        android:textColor="#0D3B66"
+        android:textColorHighlight="#0D3B66"
+        android:textColorHint="#FFFFFF"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtViewtotalLabel" />
 
     <TextView
         android:id="@+id/textViewwithTax"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btnPlaceOrder"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center_vertical"
+        android:textColor="#F95738"
+        android:textColorHint="#FFFFFF"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.39"
-        app:layout_constraintStart_toEndOf="@+id/textViewtotaltaxLabel"
         app:layout_constraintTop_toBottomOf="@+id/textViewtotal" />
 
     <Button
         android:id="@+id/btnPlaceOrder"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/order"
+        android:textSize="18sp"
+        app:backgroundTint="#F95738"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPayment"
-        app:layout_constraintVertical_bias="0.884" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

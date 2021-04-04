@@ -38,7 +38,7 @@ public class AddressAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.addresslayout, parent, false);
         }
-        TextView txt=convertView.findViewById(R.id.textViewaddress);
+        TextView txt = convertView.findViewById(R.id.textViewaddress);
         txt.setText(address.get(position)[0]);
         return convertView;
     }

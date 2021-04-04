@@ -1,45 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
+    <Button
         android:id="@+id/btnDeleteFromOrder"
-        android:layout_width="42dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@color/design_default_color_error"
+        android:layout_width="45dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/txtBtnDelete"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:backgroundTint="#F95738"
+        app:cornerRadius="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_delete" />
 
     <TextView
         android:id="@+id/textViewFoodName"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
+        android:layout_width="140dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/textViewFoodTitle"
+        android:textColor="#0D3B66"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/btnDeleteFromOrder"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtViewPrice"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:gravity="center"
-        android:text="@string/textViewFoodTitle" />
+        android:text="TextView"
+        android:textColor="#0D3B66"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/btnDecrementFood"
+        app:layout_constraintStart_toEndOf="@+id/textViewFoodName" />
 
     <Button
         android:id="@+id/btnDecrementFood"
-        android:layout_width="42dp"
-        android:layout_height="wrap_content"
+        android:layout_width="45dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginRight="55dp"
+        android:fontFamily="@font/roboto_medium"
         android:text="@string/btnDecrementFoodQuantity"
-        android:textSize="24sp"
-        app:backgroundTint="@color/design_default_color_error" />
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        app:backgroundTint="#F95738"
+        app:cornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewFoodQuantity"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewFoodQuantity"
-        android:layout_width="42dp"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="22dp"
+        android:background="#F95738"
+        android:fontFamily="@font/roboto_medium"
         android:gravity="center"
-        android:text="5" />
+        android:text="5"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnIncrementFood"
-        android:layout_width="42dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1"
+        android:layout_width="45dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_medium"
         android:text="@string/btnIncrementFoodQuantity"
-        android:textSize="24sp"
-        app:backgroundTint="@color/quantum_googgreen500" />
-</LinearLayout>
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        app:backgroundTint="#F95738"
+        app:cornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textViewFoodQuantity"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

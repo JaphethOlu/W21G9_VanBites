@@ -6,17 +6,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.vanbites.CartActivity;
 import com.example.vanbites.Interface.ItemClickListener;
 import com.example.vanbites.Model.Category_model;
 import com.example.vanbites.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -28,8 +31,8 @@ public class Categories extends AppCompatActivity {
 
     FirebaseRecyclerOptions<Category_model> options;
     FirebaseRecyclerAdapter adapter;
-
     RecyclerView recyclerViewCategory;
+    FloatingActionButton cartButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +48,20 @@ public class Categories extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
+        cartButton = findViewById(R.id.floatingActionButton2);
+        cartButton.setColorFilter(Color.WHITE);
+        cartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Categories.this, CartActivity.class));
+            }
+        });
+
         // Firebase initiation
         category = FirebaseDatabase.getInstance().getReference().child("Category");
 
         recyclerViewCategory = findViewById(R.id.recyclerViewCategory);
-        recyclerViewCategory.setHasFixedSize(true);
+        //recyclerViewCategory.setHasFixedSize(true); // to avoid layout problems
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(this));
         loadCategories();
 

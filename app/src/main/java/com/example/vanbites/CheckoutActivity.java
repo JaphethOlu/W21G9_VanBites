@@ -3,9 +3,11 @@ package com.example.vanbites;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +30,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private TextView txtAddress;
     private Spinner spinnerPayment;
     private Button btnPlaceOrder;
+    private Button btnGoBack5;
     private TextView txtFood;
     private TextView textViewTotal;
     private TextView textViewTotalWithTax;
@@ -43,6 +46,18 @@ public class CheckoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
+
+        // Create the DecimalFormat Instance
+        //decFormat = new DecimalFormat("$###,###.##");
+
         editDelivery = findViewById(R.id.etDelivery);
         txtAddress = findViewById(R.id.txtAddress);
         spinnerPayment = findViewById(R.id.spinnerPayment);
@@ -50,7 +65,17 @@ public class CheckoutActivity extends AppCompatActivity {
         txtFood = findViewById(R.id.txtFoodItems);
         textViewTotal = findViewById(R.id.textViewtotal);
         textViewTotalWithTax = findViewById(R.id.textViewwithTax);
+        btnGoBack5 = findViewById(R.id.btnGoBack5);
 
+        txtFood.setMovementMethod(new ScrollingMovementMethod());
+
+        btnGoBack5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        
 
         Address address = (Address) getIntent().getParcelableExtra("address");
         String addressFinal = address.getAddress();
@@ -76,6 +101,7 @@ public class CheckoutActivity extends AppCompatActivity {
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 int foodid = 2;
                 //adding to order table
                 String foodItems = txtFood.getText().toString();
@@ -85,8 +111,8 @@ public class CheckoutActivity extends AppCompatActivity {
                 String deliveryNotes = editDelivery.getText().toString();
 
                 addToOrderTable(foodid, foodItems, addressforOrder, paymentMethod, deliveryNotes);
-                //foodid=foodid+1;
-                //create intent and send to new activity if insert successfull
+
+                startActivity(new Intent(CheckoutActivity.this, OrderPlacedActivity.class));
             }
         });
 

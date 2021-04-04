@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.vanbites.entities.Food;
 import com.example.vanbites.entities.Order;
@@ -30,6 +31,8 @@ public class CartActivity extends AppCompatActivity {
 
     private ListView listView;
     private Button btnCheckout;
+    private Button btnGoBack2;
+    private TextView txtViewTotalCartPrice;
 
     SQLiteDatabase VanbitesDB;
 
@@ -38,7 +41,20 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+
+        // make activity fullscreen
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
+
         listView = findViewById(R.id.listviewCart);
+
+        txtViewTotalCartPrice = findViewById(R.id.txtViewTotalCartPrice);
 
         openDB();
 
@@ -51,9 +67,17 @@ public class CartActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         btnCheckout = findViewById(R.id.btnCheckout);
+        btnGoBack2 = findViewById(R.id.btnGoBack2);
 
         // Calculate and display the total cost of all cart items in btnCheckout
         updateCheckoutTotal();
+
+        btnGoBack2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,8 +111,7 @@ public class CartActivity extends AppCompatActivity {
      */
     private void updateCheckoutTotal() {
          double orderTotal = order.calculateTotalCost();
-
-        btnCheckout.setText("Checkout $" + orderTotal);
+        txtViewTotalCartPrice.setText("Subtotal: " + orderTotal);
     }
 
     private void openDB() {
@@ -189,12 +212,11 @@ public class CartActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+
         // Call super class method first
         super.onStop();
-
         // Check and update the cart if there was a change in the items
         if(didOrderItemsListChange) updateCart();
-
         didOrderItemsListChange = false;
 
     }
