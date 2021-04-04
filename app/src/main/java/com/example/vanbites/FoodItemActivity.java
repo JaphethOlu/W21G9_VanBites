@@ -30,6 +30,10 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DecimalFormat;
+import java.util.Currency;
+import java.util.Locale;
+
 public class FoodItemActivity extends AppCompatActivity {
 
     private final long TWO_MB = 2048 * 2048;
@@ -48,10 +52,12 @@ public class FoodItemActivity extends AppCompatActivity {
     private Button btnDecrementQuantity;
     private Button btnAddToOrder;
     private Button btnGoToCheckout;
+    private Button btnGoBack;
     private EditText editQuantity;
     private ImageView foodImageView;
     private TextView textViewFoodTitle;
     private TextView textViewFoodDescription;
+    private TextView textViewPrice;
 
     SQLiteDatabase VanbitesDB;
 
@@ -72,9 +78,9 @@ public class FoodItemActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        //        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
-                //        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         );
 
         openDB();
@@ -89,7 +95,17 @@ public class FoodItemActivity extends AppCompatActivity {
         btnDecrementQuantity = findViewById(R.id.btnDecrementFoodQuantity);
         btnAddToOrder = findViewById(R.id.btnAddToOrder);
         btnGoToCheckout = findViewById(R.id.btnGoToCheckout);
+        btnGoBack = findViewById(R.id.btnGoBack);
         textViewFoodDescription = findViewById(R.id.textViewFoodDescription);
+        textViewPrice = findViewById(R.id.textViewPrice);
+
+
+        btnGoBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed ();
+            }
+        });
 
         // Grab the Number Text View that shows food item quantity for manipulation
         editQuantity = findViewById(R.id.editFoodQuantity);
@@ -104,7 +120,14 @@ public class FoodItemActivity extends AppCompatActivity {
         orderItem = new OrderItem(currentFood, foodQuantity);
 
         // Set the cost of the item in the add to order button
-        btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+        // btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+
+        // Create the DecimalFormat Instance
+        DecimalFormat decFormat = new DecimalFormat("$###,###.##");
+
+
+        // Set item cost in textViewPrice
+        textViewPrice.setText(decFormat.format(orderItem.getCost()));
 
         // Set the food description
         textViewFoodDescription.setText(currentFood.getDescription());
@@ -115,7 +138,8 @@ public class FoodItemActivity extends AppCompatActivity {
         btnIncrementQuantity.setOnClickListener((View view) -> {
             foodQuantity++;
             orderItem.incrementQuantity();
-            btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+//          btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+            textViewPrice.setText(decFormat.format(orderItem.getCost()));
             editQuantity.setText(Integer.toString(foodQuantity));
         });
 
@@ -128,7 +152,8 @@ public class FoodItemActivity extends AppCompatActivity {
                 foodQuantity--;
             }
             orderItem.incrementQuantity();
-            btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+//          btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+            textViewPrice.setText(decFormat.format(orderItem.getCost()));
             editQuantity.setText(Integer.toString(foodQuantity));
         });
 
@@ -149,8 +174,21 @@ public class FoodItemActivity extends AppCompatActivity {
                 String newQuantity = s.toString();
                 try {
                     foodQuantity = Integer.parseInt(newQuantity);
+                    Toast toast;
+                    toast = Toast.makeText(FoodItemActivity.this, "Food quantity can not be " + foodQuantity, Toast.LENGTH_SHORT);
+                    if (foodQuantity < 1){
+                        if (toast != null){
+                            toast.cancel();
+                        }
+                        toast.show();
+                    }
+
                     orderItem.setQuantity(foodQuantity);
-                    btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+//                  btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+                    textViewPrice.setText(decFormat.format(orderItem.getCost()));
+
+
+
                 } catch (NumberFormatException e) {
                     Log.d("FoodActivity", "Error converting foodQuantity to int -> " + e.getMessage());
                 }
@@ -172,10 +210,12 @@ public class FoodItemActivity extends AppCompatActivity {
          */
         btnAddToOrder.setOnClickListener((View view) -> {
             AddOrderItemToCart();
-            Toast.makeText(this, "Added " + currentFood.getName() + " to Order", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, foodQuantity + " pc of " +currentFood.getName() + " added to the cart", Toast.LENGTH_LONG).show();
             foodQuantity = 1;
             orderItem.setQuantity(foodQuantity);
-            btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+            editQuantity.setText(Integer.toString(foodQuantity));
+//            btnAddToOrder.setText("Add To Order $(" + orderItem.getCost() + ")");
+            textViewPrice.setText(decFormat.format(orderItem.getCost()));
         });
 
         getImageFromFirebase();

@@ -7,12 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.vanbites.entities.Food;
 import com.example.vanbites.entities.OrderItem;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class CartAdapter extends BaseAdapter {
@@ -20,6 +20,7 @@ public class CartAdapter extends BaseAdapter {
     SQLiteDatabase VanbitesDB;
 
     List<OrderItem> orderItems;
+
 
     public CartAdapter(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
@@ -55,11 +56,14 @@ public class CartAdapter extends BaseAdapter {
 
         TextView textViewFoodName = view.findViewById(R.id.textViewFoodName);
         TextView textViewQuantity = view.findViewById(R.id.textViewFoodQuantity);
+        TextView txtViewPrice = view.findViewById(R.id.txtViewPrice);
         Button btnIncrementFood = view.findViewById(R.id.btnIncrementFood);
         Button btnDecrementFood = view.findViewById(R.id.btnDecrementFood);
-        ImageButton btnDeleteFromOrder = view.findViewById(R.id.btnDeleteFromOrder);
+        Button btnDeleteFromOrder = view.findViewById(R.id.btnDeleteFromOrder);
+        DecimalFormat decFormat = new DecimalFormat("$###,###.##");
 
         textViewFoodName.setText(food.getName());
+        txtViewPrice.setText(decFormat.format(orderItem.getCost()));
         textViewQuantity.setText(String.valueOf(orderItem.getQuantity()));
 
         btnIncrementFood.setOnClickListener(new View.OnClickListener() {

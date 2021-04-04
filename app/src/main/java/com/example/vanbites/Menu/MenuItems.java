@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.vanbites.FoodItemActivity;
@@ -30,6 +31,7 @@ public class MenuItems extends AppCompatActivity {
     FirebaseRecyclerAdapter adapter;
     RecyclerView recyclerViewMenu;
     String cat;
+    Button btnGoBack4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +43,21 @@ public class MenuItems extends AppCompatActivity {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        //        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
-        //        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         );
 
 
         cat = getIntent().getExtras().getString("CAT", "");
+        btnGoBack4 = findViewById(R.id.btnGoBack4);
+
+        btnGoBack4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         // Firebase initiation
         menu = FirebaseDatabase.getInstance().getReference().child(cat);

@@ -17,19 +17,43 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 
 public class CheckoutActivity extends AppCompatActivity {
+
     SQLiteDatabase VanbitesDB;
     StringBuilder outputText;
+    DecimalFormat decFormat;
+    Button btnGoBack5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
+
+        // Create the DecimalFormat Instance
+        decFormat = new DecimalFormat("$###,###.##");
+
         EditText editDelivery = findViewById(R.id.etDelivery);
         TextView txtAddress = findViewById(R.id.txtAddress);
         Spinner spinnerPayment = findViewById(R.id.spinnerPayment);
         Button btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
         TextView txtFood = findViewById(R.id.txtFoodItems);
+        btnGoBack5 = findViewById(R.id.btnGoBack5);
+
+        btnGoBack5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         Address address = (Address) getIntent().getParcelableExtra("address");
         String adressFinal = address.getAddress();
@@ -81,17 +105,17 @@ public class CheckoutActivity extends AppCompatActivity {
                     Double price=cursor.getDouble(2);
                     int quantity = cursor.getInt(1);
                     total=total + (price*quantity);
-                    String eachRec= String.format("%-15s%-15d\n",cursor.getString(0),cursor.getInt(1));
+                    String eachRec= String.format("%s%5d%1s\n",cursor.getString(0),cursor.getInt(1), "pc");
                     outputText.append(eachRec);
                     cursor.moveToNext();
                 }
 
                 TextView textViewTotal=findViewById(R.id.textViewtotal) ;
 
-                textViewTotal.setText(String.valueOf(total));
+                textViewTotal.setText(decFormat.format(total));
                 Double totalWithTax= total*1.12;
                 TextView textViewTotalwithTax=findViewById(R.id.textViewwithTax);
-                textViewTotalwithTax.setText(String.valueOf(totalWithTax));
+                textViewTotalwithTax.setText(decFormat.format(totalWithTax));
             }
 
         } catch (Exception ex) {

@@ -48,14 +48,34 @@ public class MapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        // make activity fullscreen
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
+
+
         openDB();
         editText = findViewById(R.id.edit_text);
         txtError = findViewById(R.id.textView2);
         Button btnCheckout = findViewById(R.id.btn_Checkout);
         Button btnDelete = findViewById(R.id.buttonDeleteAddress);
+        Button btnGoBack3 = findViewById(R.id.btnGoBack3);
         listviewAddress=findViewById(R.id.listViewAddress);
         List<String[]> addressRecord = browseAddress();
         listviewAddress.setAdapter(new AddressAdapter(addressRecord));
+
+        btnGoBack3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         Places.initialize(getApplicationContext(), "AIzaSyCZdXirItz3j-7eAdqPSksroSLpBESF3U0");
         editText.setFocusable(false);

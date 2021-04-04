@@ -2,11 +2,11 @@
     <string name="app_name">VanBites</string>
     <string name="textViewFoodTitle">Spicy BBQ Chicken Wings</string>
     <string name="imageViewFood">Image of Current Food Iten</string>
-    <string name="btnDecrementFoodQuantity">-</string>
+    <string name="btnDecrementFoodQuantity">−</string>
     <string name="btnIncrementFoodQuantity">+</string>
     <string name="textViewFoodDescription">"Spicy jalapeno brisket laborum ham hock, esse pig picanha biltong qui est drumstick spare ribs. Pastrami est ex dolore excepteur nisi jerky t-bone brisket culpa anim pork loin lorem incididunt doner."</string>
     <string name="editFoodQuantity">1</string>
-    <string name="btnAddToOrder">Add To Order</string>
+    <string name="btnAddToOrder">Add To Cart</string>
     <string name="btnMenu">VIEW MENU</string>
     <string name="txtVan">VAN</string>
     <string name="txtBites">BITES</string>
@@ -24,7 +24,13 @@
     <string name="total">Total (Without Tax)</string>
     <string name="totalwithtax">"Total With Tax : "</string>
     <string name="to">Total (With Tax)</string>
-    <string name="btnGoToCheckout">Go To Checkout</string>
+    <string name="btnGoToCheckout">Checkout</string>
+    <string name="priceHolder">$13.99</string>
+    <string name="textArrowLeft"><![CDATA[<]]></string>
+    <string name="txtBtnDelete">x</string>
+    <string name="txtAddress">Selected address:</string>
+    <string name="txtOrder">"Your order: "</string>
+    <string name="txtSelectPayment">Select payment method</string>
     <string-array name="payment">
         <item>Debit</item>
         <item>Credit</item>

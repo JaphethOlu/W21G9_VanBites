@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".Menu.MenuItems">
 
+    <Button
+        android:id="@+id/btnGoBack4"
+        android:layout_width="65dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:text="@string/textArrowLeft"
+        android:textColor="#FFFFFF"
+        android:textSize="29sp"
+        app:backgroundTint="#F95738"
+        app:cornerRadius="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMenu"
         android:scrollbars="vertical"
