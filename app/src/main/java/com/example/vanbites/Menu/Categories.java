@@ -48,6 +48,8 @@ public class Categories extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
+
+        // Floating cart button
         cartButton = findViewById(R.id.floatingActionButton2);
         cartButton.setColorFilter(Color.WHITE);
         cartButton.setOnClickListener(new View.OnClickListener() {
@@ -59,9 +61,7 @@ public class Categories extends AppCompatActivity {
 
         // Firebase initiation
         category = FirebaseDatabase.getInstance().getReference().child("Category");
-
         recyclerViewCategory = findViewById(R.id.recyclerViewCategory);
-        //recyclerViewCategory.setHasFixedSize(true); // to avoid layout problems
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(this));
         loadCategories();
 
@@ -93,6 +93,7 @@ public class Categories extends AppCompatActivity {
                 // https://square.github.io/picasso/
                 Picasso.get().load(model.getImage()).into(holder.imgViewCategoryImage);
 
+                // Starting new activity with bundle object containing data of category being clicked
                 holder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
@@ -102,9 +103,7 @@ public class Categories extends AppCompatActivity {
                         Intent cat = new Intent(Categories.this, MenuItems.class);
                         cat.putExtras(bundle);
                         startActivity(cat);
-
                         // Toast.makeText(Categories.this, "Clicked on " + model.getName(), Toast.LENGTH_SHORT).show();
-
                     }
                 });
 

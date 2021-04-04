@@ -54,7 +54,9 @@ public class MenuItems extends AppCompatActivity {
 
 
         cat = getIntent().getExtras().getString("CAT", "");
-        btnGoBack4 = findViewById(R.id.btnGoBack4);
+
+
+        //Floating cart button
         cartButton = findViewById(R.id.floatingActionButton);
         cartButton.setColorFilter(Color.WHITE);
         cartButton.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +66,8 @@ public class MenuItems extends AppCompatActivity {
             }
         });
 
+        // Go back button
+        btnGoBack4 = findViewById(R.id.btnGoBack4);
         btnGoBack4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,13 +77,9 @@ public class MenuItems extends AppCompatActivity {
 
         // Firebase initiation
         menu = FirebaseDatabase.getInstance().getReference().child(cat);
-
         recyclerViewMenu = findViewById(R.id.recyclerViewMenu);
-        // recyclerViewMenu.setHasFixedSize(true); // to avoid layout problems
         recyclerViewMenu.setLayoutManager(new LinearLayoutManager(this));
         loadMenu();
-
-
     }
 
 
@@ -109,6 +109,7 @@ public class MenuItems extends AppCompatActivity {
                 // https://square.github.io/picasso/
                 Picasso.get().load(model.getImage()).into(holder.imgViewMenuImage);
 
+                // Creating bundle with data of item being clicked and passing it to the Food Item Activity
                 holder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {

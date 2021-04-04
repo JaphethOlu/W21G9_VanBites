@@ -56,7 +56,7 @@ public class CheckoutActivity extends AppCompatActivity {
         );
 
         // Create the DecimalFormat Instance
-        //decFormat = new DecimalFormat("$###,###.##");
+        DecimalFormat decFormat = new DecimalFormat("$###,###.##");
 
         editDelivery = findViewById(R.id.etDelivery);
         txtAddress = findViewById(R.id.txtAddress);
@@ -93,8 +93,8 @@ public class CheckoutActivity extends AppCompatActivity {
         double total = order.getSubTotal();
 
         // Display the cart total
-        textViewTotal.setText(String.valueOf(total));
-        textViewTotalWithTax.setText(String.valueOf(totalWithTax));
+        textViewTotal.setText(decFormat.format(total));
+        textViewTotalWithTax.setText(decFormat.format(totalWithTax));
 
         txtFood.setText(outputText.toString());
 
@@ -151,7 +151,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                     int quantity = cursor.getInt(7);
 
-                    String eachRec = String.format("%-15s%-15d\n", food.getName(), quantity);
+                    String eachRec = String.format("%-5s\t\t%-15d\n", food.getName(), quantity);
                     outputText.append(eachRec);
 
                     // Create and order item
