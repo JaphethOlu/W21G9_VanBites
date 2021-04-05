@@ -2,9 +2,47 @@
     <string name="app_name">VanBites</string>
     <string name="textViewFoodTitle">Spicy BBQ Chicken Wings</string>
     <string name="imageViewFood">Image of Current Food Iten</string>
-    <string name="btnDecrementFoodQuantity">-</string>
+    <string name="btnDecrementFoodQuantity">−</string>
     <string name="btnIncrementFoodQuantity">+</string>
     <string name="textViewFoodDescription">"Spicy jalapeno brisket laborum ham hock, esse pig picanha biltong qui est drumstick spare ribs. Pastrami est ex dolore excepteur nisi jerky t-bone brisket culpa anim pork loin lorem incididunt doner."</string>
     <string name="editFoodQuantity">1</string>
-    <string name="btnAddToOrder">Add To Order</string>
+    <string name="btnAddToOrder">Add To Cart</string>
+    <string name="btnMenu">VIEW MENU</string>
+    <string name="txtVan">VAN</string>
+    <string name="txtBites">BITES</string>
+    <string name="txtWelcome">WELCOMES</string>
+    <string name="checkout">CHECKOUT</string>
+    <string name="order">PLACE ORDER</string>
+    <string name="Delivery">Delivery instructions</string>
+    <string name="updateordelete">Select Item to Update or Delete from this Order</string>
+    <string name="update">Update Item Quantity</string>
+    <string name="deleteitem">Delete Item</string>
+    <string name="btnDeleteFromOrder">Delete</string>
+    <string name="btnProceedToCheckout">Checkout</string>
+    <string name="deleteaddress">Delete</string>
+    <string name="deleteaddresss">Delete Address</string>
+    <string name="total">Total (Without Tax)</string>
+    <string name="totalwithtax">"Total With Tax : "</string>
+    <string name="to">Total (With Tax)</string>
+    <string name="priceHolder">$13.99</string>
+    <string name="textArrowLeft"><![CDATA[<]]></string>
+    <string name="txtBtnDelete">x</string>
+    <string name="txtAddress">Selected address:</string>
+    <string name="txtOrder">"Your order: "</string>
+    <string name="txtSelectPayment">Select payment method</string>
+    <string name="txtCart">CART</string>
+    <string name="txtSelectAddress">SELECT ADDRESS</string>
+    <string name="txtCheckout">Checkout</string>
+    <string name="txtThankYou">Thank you for ordering</string>
+    <string name="txtWithVanBites">with VanBites!</string>
+    <string name="txtOrderPlaced">Your Order has been placed successfully</string>
+    <string name="txtExpect">"You can expect your delivery by: "</string>
+    <string name="btnGoToCheckout">Go To Checkout</string>
+    <string name="textViewYourOrder">Your Order</string>
+    <string-array name="payment">
+        <item>Debit</item>
+        <item>Credit</item>
+        <item>COD</item>
+        <item>Google Pay</item>
+    </string-array>
 </resources>

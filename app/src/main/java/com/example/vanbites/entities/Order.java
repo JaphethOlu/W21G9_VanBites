@@ -1,5 +1,6 @@
 package com.example.vanbites.entities;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -7,55 +8,43 @@ import java.util.List;
 
 public class Order {
 
-    private List<OrderItem> items = new ArrayList<>();
+    private List<OrderItem> items;
     private double taxRate = .12; // 12% tax estimate
-    private double subTotal;
-    private double tax;
-    private double total;
+    private BigDecimal tax;
+    private BigDecimal subTotal;
+    private BigDecimal total;
 
     public Order(List<OrderItem> items) {
         this.items = items;
-        calculateTotalCost();
-    }
-
-    public double getSubTotal() {
-        return subTotal;
     }
 
     public double getTax() {
-        return tax;
+        return tax.setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    public double getSubTotal() {
+        return subTotal.setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     public double getTotal() {
-        return total;
-    }
-
-    public void addOrderItem(OrderItem item) {
-        items.add(item);
+        return total.doubleValue();
     }
 
     /**
      * This method is used to calculate the tax, subTotal and total.
-     * This calculation is performed on class initialization
      */
-    private void calculateTotalCost() {
+    public double calculateTotalCost() {
 
-        double sum = 0;
+        subTotal = new BigDecimal("0");
 
         for(OrderItem item : items) {
-            double itemCost = item.getFood().getPrice();
-            double quantity = item.getQuantity();
-            sum += itemCost * quantity;
+            subTotal = subTotal.add(item.getCostInBigDecimal());
         }
 
-        sum = Math.round(sum * 100.0) / 100.0; // Format to 2 decimal places
+        tax = subTotal.multiply(BigDecimal.valueOf(taxRate));
+        total = subTotal.add(tax);
+        total = total.setScale(2, RoundingMode.HALF_UP);
 
-        subTotal = sum;
-        tax = Math.round((sum * taxRate) * 100.0) / 100.0;
-        total = Math.round((sum + tax) * 100.0) / 100.0;
-    }
-
-    public int getSize() {
-        return items.size();
+        return total.doubleValue();
     }
 }

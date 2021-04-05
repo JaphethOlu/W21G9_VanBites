@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "748522071977",
+    "project_id": "vanbites-2ec89",
+    "storage_bucket": "vanbites-2ec89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748522071977:android:8914551eb132fd5f9586b8",
+        "android_client_info": {
+          "package_name": "com.example.vanbites"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748522071977-t8aqspg3c4a1o5d7dbohdnn55kl2adhe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6WgbE-eF1dBcF2FPvT3HEIseUVUfggvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748522071977-t8aqspg3c4a1o5d7dbohdnn55kl2adhe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
